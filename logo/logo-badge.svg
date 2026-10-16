@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>ארבע טבעות</title>
+  <circle cx="32" cy="32" r="32" fill="#5DA3E0"/>
+  <g transform="translate(32 32) scale(0.74) translate(-32 -32)"><circle cx="32" cy="32" r="27.8" stroke="#FFFFFF" stroke-width="4.2"/><circle cx="32" cy="39.8" r="20" stroke="#FFFFFF" stroke-width="4.2"/><circle cx="32" cy="47.6" r="12.2" stroke="#FFFFFF" stroke-width="4.2"/><circle cx="32" cy="54" r="5.8" fill="#FFFFFF"/></g>
+</svg>
