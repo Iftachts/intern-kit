@@ -264,6 +264,23 @@ details.more .prose{font-size:15px}
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px;max-width:72ch;flex-wrap:wrap}
 .pager a{font-size:15px;text-decoration:none;max-width:48%}
 .pager small{display:block;color:var(--muted);font-size:12px}
+.pager.items{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px}
+.pager.items a{max-width:none;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:12px;border:2px solid var(--accent);background:var(--surface);color:var(--ink);font-weight:700;font-size:16px;line-height:1.35;transition:background .15s,transform .15s}
+.pager.items a:hover{background:var(--accent-soft);transform:translateY(-1px)}
+.pager.items a .arw{font-size:26px;line-height:1;color:var(--accent);flex:none}
+.pager.items a small{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:3px}
+.pager.items a.next{background:var(--accent);color:var(--on-accent);justify-content:space-between;text-align:start;grid-column:2}
+.pager.items a.next small,.pager.items a.next .arw{color:var(--on-accent)}
+.pager.items a.next:hover{filter:brightness(1.08);background:var(--accent)}
+@media (max-width:640px){.pager.items{grid-template-columns:1fr}.pager.items a.next{grid-column:1;order:-1}}
+.stepbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.stepbar .where{font-size:14px;color:var(--muted)}
+.stepbar .where a{font-weight:700;text-decoration:none}
+.stepbar .stp{font:inherit;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent);background:var(--surface);text-decoration:none}
+.stepbar .stp:hover{background:var(--accent-soft)}
+.stepbar .stp.next{background:var(--accent);color:var(--on-accent)}
+.stepbar .stp.off{border-color:var(--line);color:var(--muted);pointer-events:none;opacity:.6}
+.stepbar .sp{flex:1}
 a.ref{text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-weight:600;white-space:nowrap}
 a.ref:hover{border-bottom-color:var(--accent)}
 
@@ -1009,7 +1026,11 @@ function pageItem(id){
   const idx = ypath.indexOf(it);
   const prev = idx > 0 ? ypath[idx - 1] : null, next = idx >= 0 && idx < ypath.length - 1 ? ypath[idx + 1] : null;
   const yl = ysid ? ST[ysid].label : 'המתווים';
-  const posNote = idx >= 0 ? `<div class="ypos"><a href="#${ysid || 'outlines'}">${esc(yl)}${ysid ? ' · ' + esc(ST[ysid].course) : ''}</a> · פריט ${idx + 1} מתוך ${ypath.length}</div>` : '';
+  const posNote = idx >= 0 ? `<nav class="stepbar" aria-label="מעבר בין פריטים">
+    <span class="where"><a href="#${ysid || 'outlines'}">${esc(yl)}${ysid ? ' · ' + esc(ST[ysid].course) : ''}</a> · פריט ${idx + 1} מתוך ${ypath.length}</span><span class="sp"></span>
+    ${prev ? `<a class="stp" href="#i-${prev.id}" title="${esc(prev.title)}">→ הקודם</a>` : `<span class="stp off" aria-hidden="true">→ הקודם</span>`}
+    ${next ? `<a class="stp next" href="#i-${next.id}" title="${esc(next.title)}">הבא ←</a>` : `<span class="stp off" aria-hidden="true">הבא ←</span>`}
+  </nav>` : '';
   const level = it.inFolder && it.stype ? `<div class="muted" style="font-size:14px;margin-top:6px">${esc(it.stype.split('(')[0].trim())}</div>` : '';
   return `<div class="item-layout"><div>
     <div class="crumbs">${crumbs}</div>
@@ -1021,7 +1042,7 @@ function pageItem(id){
       ${terms.length ? `<h2>מושגים מהפריט</h2><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div>` : ''}
     </div>` : ''}
     <div class="cite"><p><b>מראה מקום:</b> ${esc(it.cite)}</p><button class="btn" data-copy="${esc(it.cite)}" style="font-size:13px;padding:5px 10px">העתקה</button></div>
-    <nav class="pager" aria-label="פריטים סמוכים">${prev ? `<a href="#i-${prev.id}"><small>הקודם ב${esc(yl)}</small>${esc(prev.title)}</a>` : '<span></span>'}${next ? `<a href="#i-${next.id}" style="text-align:end"><small>הבא ב${esc(yl)}</small>${esc(next.title)}</a>` : ''}</nav>
+    <nav class="pager items" aria-label="פריטים סמוכים">${prev ? `<a class="prev" href="#i-${prev.id}"><span class="arw" aria-hidden="true">→</span><span><small>הקודם ב${esc(yl)}</small>${esc(prev.title)}</span></a>` : ''}${next ? `<a class="next" href="#i-${next.id}"><span><small>הבא ב${esc(yl)}</small>${esc(next.title)}</span><span class="arw" aria-hidden="true">←</span></a>` : ''}</nav>
   </div>
   ${toc ? `<aside class="item-toc" aria-label="בדף הזה"><b>בדף הזה</b>${toc}</aside>` : '<span></span>'}
   </div>`;
