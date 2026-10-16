@@ -394,6 +394,36 @@ h1,h2{font-family:var(--font-ui);font-weight:800;letter-spacing:-.01em}
 .prow.read .pnum{opacity:1}
 .group-title .dot{border-radius:50%}
 footer{background:var(--accent-soft)}
+
+/* ---------- progressive disclosure ---------- */
+.acc-group{display:grid;gap:8px;margin-top:22px;max-width:76ch}
+details.acc{background:var(--surface);border:1px solid var(--line);border-radius:12px;scroll-margin-top:90px}
+details.acc > summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-size:17px}
+details.acc > summary::-webkit-details-marker{display:none}
+details.acc > summary::after{content:"";margin-inline-start:auto;width:9px;height:9px;border-inline-end:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg);transition:transform .2s;flex:none}
+details.acc[open] > summary::after{transform:rotate(-135deg)}
+details.acc > summary:hover{background:var(--accent-soft);border-radius:12px}
+details.acc[open] > summary{border-bottom:1px solid var(--line);border-radius:12px 12px 0 0}
+.acc-body{padding:4px 18px 16px}
+details.acc.lead{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+details.acc.big > summary{font-size:19px;padding:16px 18px}
+@media (prefers-reduced-motion:reduce){details.acc > summary::after{transition:none}}
+details.mini{margin-top:4px}
+details.mini > summary{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);list-style:none}
+details.mini > summary::-webkit-details-marker{display:none}
+details.mini > summary::after{content:"▾";font-size:11px}
+details.mini[open] > summary::after{content:"▴"}
+details.mini p{margin:6px 0 0;font-size:15px;color:var(--muted);display:block!important;-webkit-line-clamp:unset!important}
+.domain-body .dlead{max-width:72ch}
+details.gl{padding:0;border-top:1px solid var(--line)}
+details.gl > summary{list-style:none;cursor:pointer;padding:12px 2px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+details.gl > summary::-webkit-details-marker{display:none}
+details.gl > summary .t{font-family:var(--font-ui);font-weight:700;font-size:19px}
+details.gl > summary:hover .t{color:var(--accent)}
+details.gl > summary .en{font-size:14px;color:var(--muted);direction:ltr;unicode-bidi:isolate}
+details.gl > summary::after{content:"+";margin-inline-start:auto;color:var(--accent);font-weight:700;font-size:20px}
+details.gl[open] > summary::after{content:"−"}
+details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
 </style>
 
 <div id="app">
@@ -527,6 +557,8 @@ function readBtn(id, big){
 }
 function domainChip(d){ return `<a class="chip" href="#d-${d}" style="--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d].label)}</a>`; }
 function stageChip(s){ return `<a class="chip" href="#${s}">${esc(ST[s].label)} · ${esc(ST[s].course)}</a>`; }
+function acc(title, html, id, cls){ return `<details class="acc${cls ? ' ' + cls : ''}"${id ? ` id="${id}"` : ''}><summary>${title}</summary><div class="acc-body prose">${html}</div></details>`; }
+function miniTldr(t){ return t ? `<details class="mini"><summary>תקציר</summary><p>${esc(t)}</p></details>` : ''; }
 function byline(it){ return [it.authors, it.year].filter(Boolean).map(esc).join(' · '); }
 const FDIR = 'files/';
 const ORIG_KIND = { doc: 'Word', docx: 'Word', pptx: 'PowerPoint' };
@@ -664,7 +696,7 @@ function itemCard(it){
     <div class="card-main">
       <h3><a href="#i-${it.id}">${esc(it.title)}</a></h3>
       <div class="by">${byline(it)}</div>
-      ${it.tldr ? `<p>${esc(it.tldr)}</p>` : ''}
+      ${miniTldr(it.tldr)}
       <div class="tags">${tags.join('')}</div>
     </div>
     ${readBtn(it.id)}
@@ -677,6 +709,11 @@ function nextUnread(){
 }
 
 /* ================= pages ================= */
+const YEAR_SHORT = {
+  s1: 'שנת היכרות: המקצוע, הכניסה לבית הספר, אבחון וטיפול ראשונים.',
+  s2: 'העמקה בטיפול ובעבודה המערכתית, וכניסה לחינוך המיוחד ולקהילה.',
+  s3: 'תיאוריה מעמיקה, ליבת המקצוע והכנה לבחינת הסיום.'
+};
 const YEAR_INTRO = {
   s1: 'השנה הראשונה היא שנת היכרות: מה זה להיות פסיכולוג חינוכי, איך נכנסים לבית ספר ולעבודה עם המנהל, ואיך נראים האבחון, הטיפול וההתערבות בחירום בפעם הראשונה. את מתווה העבודה של המסגרת שלך כדאי להכיר כבר בהתחלה; המתווים נמצאים בעמוד נפרד, מחוץ לשנים.',
   s2: 'בשנים ב\'-ג\' הקריאה מעמיקה. בטיפול: עבודה עם הורים, המשגה דינמית והחוזה הטיפולי. ובעיקר בעבודה המערכתית: בית הספר כארגון, החוזה עם המנהל, הלא מודע הארגוני וההכלה. כאן נכנסים גם החינוך המיוחד והקהילה.',
@@ -728,7 +765,7 @@ function pageHome(){
     <div class="panel nextup">
       <div class="eyebrow">הבא בתור · ${esc(ST[cur].label)}</div>
       ${nxt ? `<h2><a href="#i-${nxt.id}">${esc(nxt.title)}</a></h2><div class="by">${byline(nxt)}</div>
-        ${nxt.tldr ? `<p>${esc(nxt.tldr)}</p>` : ''}
+        ${miniTldr(nxt.tldr)}
         <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true)}</div>`
       : `<h2>סיימת את ${esc(ST[cur].label)}</h2><p>כל הפריטים בשנה הזו סומנו כנקראו.</p><div class="actions">${cur !== 's3' ? `<a class="btn primary" href="#${D.stages[D.stages.findIndex(s => s.id === cur) + 1].id}">לשנה הבאה</a>` : `<a class="btn primary" href="#exam">להכנה לבחינה</a>`}</div>`}
       <div class="actions" style="margin-top:6px"><a href="#${cur}">לכל רשימת הקריאה של ${esc(ST[cur].label)} ←</a></div>
@@ -741,8 +778,7 @@ function pageHome(){
     </aside>
   </section>
 
-  <section class="sec orient-sec" id="orient" style="max-width:none"><div class="section-head"><h2>מתחילים כאן</h2><span class="muted">מה לקרוא בחודש הראשון</span></div>
-    <div class="panel"><div class="orient prose">${D.domainText.orientation || ''}</div></div></section>
+  <section id="orient" style="margin-top:28px">${acc('<b>מתחילים כאן</b> <span class="muted">מה לקרוא בחודש הראשון</span>', `<div class="orient">${D.domainText.orientation || ''}</div>`, 'orientAcc', 'big')}</section>
 
   <div class="section-head"><h2>לצד המסלול</h2></div>
   <div class="quick">
@@ -793,7 +829,7 @@ function matrix(){
 function pathRow(it, n){
   const r = Store.isRead(it.id);
   return `<li class="prow${r ? ' read' : ''}${it.inFolder ? '' : ' linkonly'}"><span class="pnum">${n}</span>${readBtn(it.id)}
-    <div class="pmain"><a class="ptitle" href="#i-${it.id}">${esc(it.title)}</a><div class="by">${byline(it)}</div>${it.tldr ? `<p>${esc(it.tldr)}</p>` : ''}<div class="tags">${srcTags(it)}</div></div></li>`;
+    <div class="pmain"><a class="ptitle" href="#i-${it.id}">${esc(it.title)}</a><div class="by">${byline(it)}</div>${miniTldr(it.tldr)}<div class="tags">${srcTags(it)}</div></div></li>`;
 }
 function yearSwitch(sid){
   return `<nav class="ysw" aria-label="מעבר בין שנים">${D.stages.map(s => `<a href="#${s.id}"${s.id === sid ? ' aria-current="page"' : ''}><b>${esc(s.label)}</b> ${esc(s.course)}</a>`).join('<span aria-hidden="true">←</span>')}</nav>`;
@@ -819,7 +855,7 @@ function pageStage(sid){
   const prevS = D.stages[k - 1], nextS = D.stages[k + 1];
   return `${yearSwitch(sid)}
   <div class="year-head">
-    <div class="pagehead"><div class="eyebrow">${esc(s.label)}</div><h1>${esc(s.course)}</h1><p class="lede">${esc(YEAR_INTRO[sid] || s.blurb)}</p></div>
+    <div class="pagehead"><div class="eyebrow">${esc(s.label)}</div><h1>${esc(s.course)}</h1><p class="lede">${esc(YEAR_SHORT[sid])}</p><details class="mini"><summary>עוד על השנה</summary><p>${esc(YEAR_INTRO[sid] || s.blurb)}</p></details></div>
     <aside class="panel">
       <div class="prog-row"><span><b>${done}</b> מתוך ${ids.length} נקראו</span><span>${ids.length ? Math.round(100 * done / ids.length) : 0}%</span>${bar(done, ids.length)}</div>
       ${nxt ? `<div class="next-up"><span class="muted">הבא בתור:</span><br><a href="#i-${nxt.id}">${esc(nxt.title)}</a></div>` : `<div class="next-up"><b>סיימת את השנה הזו.</b>${nextS ? ` <a href="#${nextS.id}">ל${esc(nextS.label)} ←</a>` : ''}</div>`}
@@ -840,6 +876,12 @@ function pageDomains(){
     return `<a class="tool-card" href="#d-${d.id}" style="--c:${dcol(d.id)}"><b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b><span>${ids.length} פריטים · ${D.tools.filter(t => t.domain === d.id).length} כלים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; }).join('')}</div>`;
 }
 
+function domainAcc(h){
+  const parts = h.split(/<h4>/);
+  let out = parts[0] ? `<div class="prose dlead">${parts[0]}</div>` : '';
+  out += '<div class="acc-group">' + parts.slice(1).map(p => { const i = p.indexOf('</h4>'); return acc(`<b>${p.slice(0, i)}</b>`, p.slice(i + 5)); }).join('') + '</div>';
+  return out;
+}
 function pageDomain(did){
   const d = DM[did];
   const ids = itemsIn(null, did).map(i => i.id);
@@ -855,7 +897,7 @@ function pageDomain(did){
   return `<div class="pagehead"><div class="crumbs"><a class="chip" href="#domains">תחומים</a></div>
     <div class="domain-hero" style="--c:${dcol(did)}"><span class="sw"></span><div><div class="eyebrow">תחום · ${esc(d.label)}</div><h1>${esc(d.long)}</h1></div></div>
     <div style="margin-top:14px;max-width:420px"><div class="prog-row"><span>נקראו</span><span>${Store.count(ids)}/${ids.length}</span>${bar(Store.count(ids), ids.length)}</div></div></div>
-    <div class="domain-body prose">${D.domainText[did] || ''}</div>
+    <div class="domain-body">${domainAcc(D.domainText[did] || '')}</div>
     <div class="section-head"><h2>הקריאה לפי שלבים</h2></div>${byStage}
     ${tools.length ? `<div class="section-head"><h2>כלים בתחום</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
     ${terms.length ? `<div class="section-head"><h2>מושגים בתחום</h2><a href="#glossary">למילון המלא</a></div><div class="related"><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}`;
@@ -875,14 +917,15 @@ function pageItem(id){
   let body = '', toc = '';
   body += srcBox(it);
   if (it.inFolder){
-    body += `<div class="abstract prose">${it.secs.abstract || ''}</div>`;
+    body += `<div class="acc-group">` + acc('<b>בקצרה</b>', it.secs.abstract || '', 'sec-abstract', 'lead');
     let n = 0;
     SEC_ORDER.forEach(([k, label]) => {
       const h = it.secs[k]; if (!h || !h.trim()) return;
       n++;
-      body += `<section class="sec sec-${k}" id="sec-${k}"><h2>${esc(label)}</h2><div class="prose">${h}</div></section>`;
+      body += acc(`<b>${esc(label)}</b>`, h, `sec-${k}`, `sec-${k}`);
       toc += `<button data-jump="sec-${k}">${esc(label)}</button>`;
     });
+    body += `</div>`;
   } else {
     body += `<div class="linkonly-box"><p>${esc(it.desc || '')}</p></div>`;
   }
@@ -977,9 +1020,9 @@ function renderGlossary(){
   list.forEach(g => { const L = firstLetter(g.term); (by[L] = by[L] || []).push(g); });
   document.getElementById('glLetters').innerHTML = LETTERS.map(L => `<button data-letter="${L}" ${by[L] ? '' : 'disabled'}>${L}</button>`).join('');
   el.innerHTML = list.length ? Object.keys(by).sort((a, b) => LETTERS.indexOf(a) - LETTERS.indexOf(b)).map(L =>
-    `<div class="gl-letter" id="gl-${L}">${L}</div>` + by[L].map(g => `<div class="gl" data-gterm="${esc(g.term)}"><h3>${esc(g.term)}${g.en ? `<span class="en">${esc(g.en)}</span>` : ''}</h3>
+    `<div class="gl-letter" id="gl-${L}">${L}</div>` + by[L].map(g => `<details class="gl" data-gterm="${esc(g.term)}"><summary><span class="t">${esc(g.term)}</span>${g.en ? `<span class="en">${esc(g.en)}</span>` : ''}</summary>
       <div class="prose">${g.html}</div>
-      <div class="meta">${g.domains.map(d => `<span style="display:inline-flex;gap:5px;align-items:center;--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d] ? DM[d].label : d)}</span>`).join('')}${g.sources.length ? ' · מקורות: ' + g.sources.map(s => `<a class="ref" href="#i-${s}">${esc(IT[s].ref)}</a>`).join(', ') : ''}</div></div>`).join('')).join('')
+      <div class="meta">${g.domains.map(d => `<span style="display:inline-flex;gap:5px;align-items:center;--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d] ? DM[d].label : d)}</span>`).join('')}${g.sources.length ? ' · מקורות: ' + g.sources.map(s => `<a class="ref" href="#i-${s}">${esc(IT[s].ref)}</a>`).join(', ') : ''}</div></details>`).join('')).join('')
     : '<div class="empty-state">לא נמצא מושג. אפשר לנסות ניסוח אחר או לחפש בחיפוש הכללי.</div>';
 }
 
@@ -994,9 +1037,7 @@ function pageOutlines(){
   <div class="item-head" style="margin-top:22px"><h2 style="font-size:28px">${esc(it.title)}</h2><div class="by">${byline(it)}</div></div>
   <div class="actions">${readBtn(it.id, true)}<a class="btn" href="#i-${it.id}">לסיכום המלא</a></div>
   ${srcBox(it)}
-  <div class="abstract prose">${it.secs.abstract}</div>
-  <section class="sec"><h2>מבנה, שלבים ולוחות זמנים</h2><div class="prose">${it.secs.models}</div></section>
-  <section class="sec"><h2>יישום למתמחה</h2><div class="prose">${it.secs.practice}</div></section>`;
+  <div class="acc-group">${acc('<b>בקצרה</b>', it.secs.abstract)}${acc('<b>מבנה, שלבים ולוחות זמנים</b>', it.secs.models)}${acc('<b>יישום למתמחה</b>', it.secs.practice)}</div>`;
 }
 
 /* exam */
@@ -1007,10 +1048,7 @@ function pageExam(){
     <p class="lede">מה מצופה לדעת בסוף ההתמחות, ואיך לארגן הצגה של מקרה מערכתי.</p></div>
   <div class="actions">${readBtn('rubric', true)}<a class="btn" href="#i-rubric">לסיכום המלא של המחוון</a></div>
   ${srcBox(r)}
-  <div class="abstract prose">${r.secs.abstract}</div>
-  <section class="sec"><h2>הציפיות ותרשים הזרימה</h2><div class="prose">${r.secs.models}</div></section>
-  ${flow ? `<section class="sec"><h2>${esc(flow.title)}</h2><div class="when" style="margin-top:0"><b>מתי להשתמש:</b> ${esc(flow.when)}</div><div class="prose">${flow.html}</div></section>` : ''}
-  <section class="sec"><h2>שאלות להכנה</h2><div class="prose">${r.secs.questions}</div></section>
+  <div class="acc-group">${acc('<b>בקצרה</b>', r.secs.abstract)}${acc('<b>הציפיות ותרשים הזרימה</b>', r.secs.models)}${flow ? acc(`<b>${esc(flow.title)}</b>`, `<p><b>מתי להשתמש:</b> ${esc(flow.when)}</p>` + flow.html) : ''}${acc('<b>שאלות להכנה</b>', r.secs.questions)}</div>
   <div class="section-head"><h2>קריאה מומלצת לקראת הבחינה</h2></div>
   <div class="cards">${reads.map(x => itemCard(IT[x])).join('')}</div>`;
 }
@@ -1036,7 +1074,7 @@ function srcRow(it){
   const b = [];
   if (it.file) b.push(pdfLink(it.id, `PDF · ${it.file.pages} עמ'`, 'btn'));
   if (it.url) b.push(`<a class="btn" href="${esc(it.url)}" target="_blank" rel="noopener" title="${esc(it.urlLabel || '')}">קישור ↗</a>`);
-  return `<div class="row"><div><a class="t" href="#i-${it.id}">${esc(it.title)}</a> <span class="muted" style="font-size:14px">${byline(it)}</span><div class="c">${esc(it.cite)}</div></div><div class="b">${b.join('')}</div></div>`;
+  return `<div class="row"><div><a class="t" href="#i-${it.id}">${esc(it.title)}</a> <span class="muted" style="font-size:14px">${byline(it)}</span></div><div class="b">${b.join('')}</div></div>`;
 }
 function pageSources(){
   const nf = D.items.filter(i => i.file).length, nu = D.items.filter(i => i.url).length, nn = D.items.filter(i => !i.file && !i.url).length;
@@ -1118,7 +1156,7 @@ document.addEventListener('click', e => {
   const t = e.target.closest('[data-toggle]');
   if (t){ e.preventDefault(); Store.toggle(t.dataset.toggle); return; }
   const j = e.target.closest('[data-jump]');
-  if (j){ const s = document.getElementById(j.dataset.jump); if (s) s.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); return; }
+  if (j){ const s = document.getElementById(j.dataset.jump); if (s && s.tagName === 'DETAILS') s.open = true; if (s) s.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); return; }
   const f = e.target.closest('[data-f]');
   if (f){ LIB[f.dataset.f] = f.dataset.v; document.querySelectorAll(`[data-f="${f.dataset.f}"]`).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === f.dataset.v))); renderLib(); return; }
   const g = e.target.closest('[data-g]');
@@ -1127,7 +1165,7 @@ document.addEventListener('click', e => {
   if (L){ const s = document.getElementById('gl-' + L.dataset.letter); if (s) s.scrollIntoView({ block: 'start' }); return; }
   const term = e.target.closest('[data-term]');
   if (term){ GL.q = term.dataset.term; GL.domain = ''; if (current() === 'glossary') render(false); else location.hash = '#glossary';
-    setTimeout(() => { const el = document.querySelector(`.gl[data-gterm="${CSS.escape(term.dataset.term)}"]`); if (el) el.scrollIntoView({ block: 'start' }); }, 30); return; }
+    setTimeout(() => { const el = document.querySelector(`.gl[data-gterm="${CSS.escape(term.dataset.term)}"]`); if (el){ el.open = true; el.scrollIntoView({ block: 'start' }); } }, 30); return; }
   const tab = e.target.closest('[data-tab]');
   if (tab){ OUT_TAB = tab.dataset.tab; render(true); return; }
   const cp = e.target.closest('[data-copy]');
