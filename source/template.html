@@ -432,6 +432,9 @@ details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
 .readbtn{border-color:var(--line-strong)}
 .search input,.filters input[type=search],.myyear select{border-color:var(--line-strong)}
 #readerBody:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.skipbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:10px;font-size:14px}
+.linkbtn{font:inherit;font-size:14px;font-weight:600;background:none;border:0;padding:2px 0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 </style>
 
 <div id="app">
@@ -789,7 +792,25 @@ function currentYear(){
   for (const s of D.stages){ const ids = yearIds(s.id); if (Store.count(ids) < ids.length) return s.id; }
   return 's3';
 }
-function nextInYear(sid){ return yearPath(sid).find(i => !Store.isRead(i.id)) || null; }
+// skipped items go to the back of the queue (per viewer, in this browser)
+const SKIPKEY = 'kit-skip-v1';
+let SKIP = []; try { const v = JSON.parse(localStorage.getItem(SKIPKEY) || '[]'); if (Array.isArray(v)) SKIP = v.filter(x => typeof x === 'string'); } catch(e){}
+function saveSkip(){ try { localStorage.setItem(SKIPKEY, JSON.stringify(SKIP)); } catch(e){} }
+function skipItem(id){ SKIP = SKIP.filter(x => x !== id); SKIP.push(id); saveSkip(); }
+function unskipYear(sid){ const ids = new Set(yearIds(sid)); SKIP = SKIP.filter(x => !ids.has(x)); saveSkip(); }
+function skippedIn(sid){ const ids = new Set(yearIds(sid)); return SKIP.filter(x => ids.has(x) && !Store.isRead(x)); }
+function nextInYear(sid){
+  const unread = yearPath(sid).filter(i => !Store.isRead(i.id));
+  const fresh = unread.find(i => !SKIP.includes(i.id));
+  if (fresh) return fresh;
+  // everything left was skipped: bring back the one skipped longest ago
+  for (const id of SKIP){ const it = unread.find(i => i.id === id); if (it) return it; }
+  return null;
+}
+function skipBar(sid, nxt){
+  const n = skippedIn(sid).length;
+  return `<div class="skipbar">${nxt ? `<button type="button" class="linkbtn" data-skip="${nxt.id}">דלג לפריט הבא ←</button>` : ''}${n ? `<span class="muted">דילגת על ${n}</span><button type="button" class="linkbtn" data-unskip="${sid}">ביטול דילוגים</button>` : ''}</div>`;
+}
 function stageOfItem(it){ return it.placements.length ? it.placements[0][0] : null; }
 
 function pageHome(){
@@ -822,7 +843,7 @@ function pageHome(){
       <div class="eyebrow">הבא בתור · ${esc(ST[cur].label)}</div>
       ${nxt ? `<h2><a href="#i-${nxt.id}">${esc(nxt.title)}</a></h2><div class="by">${byline(nxt)}</div>
         ${miniTldr(nxt.tldr)}
-        <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true)}</div>`
+        <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true)}</div>${skipBar(cur, nxt)}`
       : `<h2>סיימת את ${esc(ST[cur].label)}</h2><p>כל הפריטים בשנה הזו סומנו כנקראו.</p><div class="actions">${cur !== 's3' ? `<a class="btn primary" href="#${D.stages[D.stages.findIndex(s => s.id === cur) + 1].id}">לשנה הבאה</a>` : `<a class="btn primary" href="#exam">להכנה לבחינה</a>`}</div>`}
       <div class="actions" style="margin-top:6px"><a href="#${cur}">לכל רשימת הקריאה של ${esc(ST[cur].label)} ←</a></div>
     </div>
@@ -911,7 +932,7 @@ function pageStage(sid){
     <div class="pagehead"><div class="eyebrow">${esc(s.label)}</div><h1>${esc(s.course)}</h1><p class="lede">${esc(YEAR_SHORT[sid])}</p><details class="mini"><summary>עוד על השנה</summary><p>${esc(YEAR_INTRO[sid] || s.blurb)}</p></details></div>
     <aside class="panel">
       <div class="prog-row"><span><b>${done}</b> מתוך ${ids.length} נקראו</span><span>${ids.length ? Math.round(100 * done / ids.length) : 0}%</span>${bar(done, ids.length)}</div>
-      ${nxt ? `<div class="next-up"><span class="muted">הבא בתור:</span><br><a href="#i-${nxt.id}">${esc(nxt.title)}</a></div>` : `<div class="next-up"><b>סיימת את השנה הזו.</b>${nextS ? ` <a href="#${nextS.id}">ל${esc(nextS.label)} ←</a>` : ''}</div>`}
+      ${nxt ? `<div class="next-up"><span class="muted">הבא בתור:</span><br><a href="#i-${nxt.id}">${esc(nxt.title)}</a>${skipBar(sid, nxt)}</div>` : `<div class="next-up"><b>סיימת את השנה הזו.</b>${nextS ? ` <a href="#${nextS.id}">ל${esc(nextS.label)} ←</a>` : ''}</div>`}
     </aside>
   </div>
   <div class="section-head"><h2>רשימת הקריאה</h2><span class="muted">${ids.length} פריטים, לפי תחומי העבודה</span></div>
@@ -1207,6 +1228,10 @@ document.addEventListener('click', e => {
       .finally(() => { dl.textContent = label; });
     return;
   }
+  const sk = e.target.closest('[data-skip]');
+  if (sk){ skipItem(sk.dataset.skip); render(true); const b = $main.querySelector('[data-skip]'); if (b) b.focus({ preventScroll: true }); return; }
+  const usk = e.target.closest('[data-unskip]');
+  if (usk){ unskipYear(usk.dataset.unskip); render(true); return; }
   const rd = e.target.closest('[data-read]');
   if (rd){ e.preventDefault(); openReader(rd.dataset.read, rd); return; }
   if (e.target.closest('#readerClose')){ closeReader(); return; }
