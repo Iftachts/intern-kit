@@ -407,6 +407,24 @@ h1,h2{font-family:var(--font-ui);font-weight:800;letter-spacing:-.01em}
 .yt-arrow{color:var(--gold);font-weight:700}
 .nextup .eyebrow{color:var(--gold);filter:brightness(.85)}
 .btn.primary{background:var(--accent);border-color:var(--accent)}
+.yt-count{display:none}
+/* phone home: next-up first, the three years as one compact row */
+@media (max-width:640px){
+  .home{display:flex;flex-direction:column}
+  .home .home-grid{display:contents}
+  .home-hero{order:0}.home .nextup{order:1;margin-top:16px}.year-track{order:2}.home .progress-panel{order:3;margin-top:16px}.outl-strip{order:4}.home > .section-head,.home > .quick{order:5}
+  .home-hero .stars,.home-hero > .eyebrow{display:none}
+  .home-hero h1{font-size:34px}
+  .home-hero .lede{font-size:16px;margin-top:8px}
+  .myyear{margin-top:12px}
+  .year-track{flex-direction:row;gap:8px;margin-top:16px}
+  .yt-arrow,.yt-meta,.yt-here{display:none}
+  .yt-card,.yt-card.is-cur{padding:10px 10px 12px;gap:4px;border-radius:12px}
+  .yt-yr{font-size:12px}
+  .yt-course{font-size:18px}
+  .yt-count{display:block;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .yt-card.is-cur .yt-count{color:color-mix(in srgb,var(--on-accent) 80%,transparent)}
+}
 .outl-strip{margin-top:16px;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
 .outl-strip b{font-family:var(--font-ui);font-weight:800;font-size:17px;color:var(--accent)}
 .outl-strip span.m{font-size:14px;color:var(--muted);flex:1 1 220px}
@@ -848,12 +866,12 @@ function pageHome(){
   const track = D.stages.map((s, k) => {
     const ids = yearIds(s.id), n = Store.count(ids);
     const state = n === ids.length ? 'הושלמה' : n ? 'בתהליך' : 'טרם התחלת';
-    return `${k ? '<span class="yt-arrow" aria-hidden="true">←</span>' : ''}<a class="yt-card${s.id === cur ? ' is-cur' : ''}" href="#${s.id}">
+    return `${k ? '<span class="yt-arrow" aria-hidden="true">←</span>' : ''}<a class="yt-card${s.id === cur ? ' is-cur' : ''}" href="#${s.id}"${s.id === cur ? ' aria-current="step"' : ''}>
       <span class="yt-yr">${esc(s.label)}</span><span class="yt-course">${esc(s.course)}</span>
-      <span class="yt-meta">${ids.length} פריטים · ${n} נקראו · ${state}</span>${bar(n, ids.length)}
+      <span class="yt-meta">${ids.length} פריטים · ${n} נקראו · ${state}</span><span class="yt-count" aria-hidden="true">${n}/${ids.length}</span>${bar(n, ids.length)}
       ${s.id === cur ? '<span class="yt-here">אתה/את כאן</span>' : ''}</a>`;
   }).join('');
-  return `
+  return `<div class="home">
   <section class="home-hero">
     <div class="stars" aria-hidden="true">${'<svg viewBox="0 0 10 10"><path d="M5 0l1.2 3.4H10L7 5.6l1.1 3.6L5 7.1 1.9 9.2 3 5.6 0 3.4h3.8z"/></svg>'.repeat(7)}</div>
     <div class="eyebrow">פסיכולוגיה חינוכית · שפ"ח תל אביב-יפו</div>
@@ -892,7 +910,7 @@ function pageHome(){
     <a href="#map"><b>מבט על</b><span>כל השנים מול תחומי העבודה בטבלה אחת</span></a>
     <a href="#sources"><b>מקורות</b><span>קבצי המקור וקישורים לכל הפריטים</span></a>
     <a href="#library"><b>ספרייה</b><span>כל הפריטים, עם סינון וחיפוש</span></a>
-  </div>`;
+  </div></div>`;
 }
 
 function pageMap(){
