@@ -18,7 +18,7 @@ DOMAINS = [
 ]
 
 # kind: article | outline | tool | book | presentation | theory
-# file: summary markdown basename (in /home/claude/summaries) or None for link-only items
+# file: summary markdown basename (in source/summaries/) or None for link-only items
 # placements: list of (stage, domain)
 # extra: True = in the folder but not listed by name in the kit
 ITEMS = [
