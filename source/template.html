@@ -599,6 +599,11 @@ a{text-underline-offset:4px}
 details.acc > summary:hover{border-radius:var(--radius)}
 details.acc[open] > summary{border-radius:var(--radius) var(--radius) 0 0}
 footer{background:transparent}
+.tool-card.umbrella{padding:22px 24px;border:2px solid var(--accent);gap:10px}
+.tool-card.umbrella .eyebrow{color:var(--accent)}
+.tool-card.umbrella b{font-size:22px}
+.tool-grid.domain-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.tool-grid.domain-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 .top-in{justify-content:space-between;flex-wrap:wrap!important}
 .nav{flex-wrap:wrap;gap:6px}
@@ -1055,7 +1060,7 @@ function pageHome(){
 }
 
 function pageMap(){
-  return `<div class="pagehead"><h1>מבט על</h1><p class="lede">כל שלוש שנות ההתמחות מול ארבעת תחומי ההתמחות, ולצדם הקריאה הכללית. העמודות הן השנים, לפי הסדר שבו קוראים.</p></div>
+  return `<div class="pagehead"><h1>מבט על</h1><p class="lede">כל שלוש שנות ההתמחות מול תחומי ההתמחות: זהות מקצועית כקטגוריית על, ותחתיה ארבעת התחומים. העמודות הן השנים, לפי הסדר שבו קוראים.</p></div>
   <div style="margin-top:22px">${matrix()}</div>
   <div class="legend"><span><i class="st"></i> טרם נקרא</span><span><i class="st on"></i> נקרא</span></div>
   <p class="muted" style="margin-top:18px">לסקירה לפי תחום: ${D.domains.map(d => `<a href="#d-${d.id}">${esc(d.long)}</a>`).join(' · ')}</p>`;
@@ -1131,9 +1136,12 @@ function pageStage(sid){
 }
 
 function pageDomains(){
-  return `<div class="pagehead"><h1>תחומי ההתמחות</h1><p class="lede">ארבעה תחומים: אבחון והתערבות במערכת, פסיכודיאגנוסטיקה, פסיכותרפיה וחירום. חינוך מיוחד ועבודה קהילתית נכללים בתחום המערכתי. בכל תחום: סקירה שמחברת בין המקורות, הקריאה לפי שלבים, כלים ומושגים.</p></div>
-  <div class="tool-grid" style="margin-top:24px">${D.domains.map(d => { const ids = itemsIn(null, d.id).map(i => i.id);
-    return `<a class="tool-card" href="#d-${d.id}" style="--c:${dcol(d.id)}"><b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b><span>${ids.length} פריטים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; }).join('')}</div>`;
+  const card = (d, wide) => { const ids = itemsIn(null, d.id).map(i => i.id);
+    return `<a class="tool-card${wide ? ' umbrella' : ''}" href="#d-${d.id}" style="--c:${dcol(d.id)}">${wide ? '<span class="eyebrow">קטגוריית על</span>' : ''}<b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b>${wide ? '<span class="muted">מה פירוש להיות פסיכולוג חינוכי ואיך לומדים להיות כזה. השאלה הזאת עוברת דרך כל ארבעת התחומים.</span>' : ''}<span>${ids.length} פריטים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; };
+  const top = D.domains.find(d => d.id === 'general');
+  return `<div class="pagehead"><h1>תחומי ההתמחות</h1><p class="lede">זהות מקצועית היא קטגוריית העל. תחתיה ארבעה תחומים: אבחון והתערבות במערכת, פסיכודיאגנוסטיקה, פסיכותרפיה וחירום. חינוך מיוחד ועבודה קהילתית נכללים בתחום המערכתי.</p></div>
+  <div style="margin-top:24px">${top ? card(top, true) : ''}</div>
+  <div class="tool-grid domain-grid" style="margin-top:14px">${D.domains.filter(d => d.id !== 'general').map(d => card(d)).join('')}</div>`;
 }
 
 function domainAcc(h){

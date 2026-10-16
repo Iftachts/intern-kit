@@ -8,11 +8,11 @@ STAGES = [
 ]
 
 DOMAINS = [
+    {"id": "general", "label": "זהות מקצועית", "long": "זהות מקצועית"},
     {"id": "system", "label": "מערכת", "long": "אבחון והתערבות במערכת"},
     {"id": "diag", "label": "פסיכודיאגנוסטיקה", "long": "פסיכודיאגנוסטיקה"},
     {"id": "therapy", "label": "פסיכותרפיה", "long": "פסיכותרפיה"},
     {"id": "emerg", "label": "חירום", "long": "חירום"},
-    {"id": "general", "label": "כללי", "long": "זהות מקצועית (כללי)"},
 ]
 
 # kind: article | outline | tool | book | presentation | theory
