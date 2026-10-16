@@ -8,13 +8,11 @@ STAGES = [
 ]
 
 DOMAINS = [
-    {"id": "general", "label": "כללי", "long": "זהות מקצועית"},
-    {"id": "diag", "label": "אבחון", "long": "אבחון פסיכולוגי"},
-    {"id": "therapy", "label": "טיפול", "long": "טיפול ועבודה עם הורים"},
-    {"id": "system", "label": "מערכת", "long": "עבודה מערכתית"},
-    {"id": "emerg", "label": "חירום", "long": "חירום ומשבר"},
-    {"id": "sped", "label": "חנ\"מ", "long": "חינוך מיוחד"},
-    {"id": "community", "label": "קהילה", "long": "עבודה קהילתית"},
+    {"id": "system", "label": "מערכת", "long": "אבחון והתערבות במערכת"},
+    {"id": "diag", "label": "פסיכודיאגנוסטיקה", "long": "פסיכודיאגנוסטיקה"},
+    {"id": "therapy", "label": "פסיכותרפיה", "long": "פסיכותרפיה"},
+    {"id": "emerg", "label": "חירום", "long": "חירום"},
+    {"id": "general", "label": "כללי", "long": "זהות מקצועית (כללי)"},
 ]
 
 # kind: article | outline | tool | book | presentation | theory
@@ -72,7 +70,7 @@ ITEMS = [
          url="https://www.hebpsy.net/articles.asp?id=4619",
          file="רציפות בחירום משה אלון", kind="article", placements=[("s1", "emerg")]),
     dict(id="tene_sped", title="מעבר לחינוך מיוחד", authors="צילה טנא", year="",
-         cite="טנא, צ'. מעבר לחינוך מיוחד.", url=None, file=None, kind="article", placements=[("s1", "sped")],
+         cite="טנא, צ'. מעבר לחינוך מיוחד.", url=None, file=None, kind="article", placements=[("s1", "system")],
          desc="מאמר של צילה טנא על המעבר לחינוך המיוחד."),
     # ---------- Years 2-3 ----------
     dict(id="ravid2024", title="היבטים טיפוליים בתהליך המשוב באבחון הפסיכו-חינוכי", authors="ה' ראביד-חיון ומ' בן ריי", year="2024",
@@ -147,16 +145,16 @@ ITEMS = [
          placements=[("s2", "system")], extra=True),
     dict(id="tlv_smallclasses", title="תפיסת העבודה של הפסיכולוג החינוכי בכיתות הקטנות", authors="פורום חנ\"מ, שפ\"ח תל אביב-יפו", year="2010",
          cite="שירות פסיכולוגי חינוכי תל-אביב-יפו (2010). תפיסת העבודה של הפסיכולוג החינוכי בכיתות לילדים עם צרכים מיוחדים בביה\"ס הרגיל: ערכים, עקרונות ויישום.",
-         url=None, file="תפיסת העבודה של הפסיכולוג החינוכי בכתות הקטנות", kind="outline", placements=[("s2", "sped")]),
+         url=None, file="תפיסת העבודה של הפסיכולוג החינוכי בכתות הקטנות", kind="outline", placements=[("s2", "system")]),
     dict(id="sped_multi", title="עבודה רב-מקצועית בחינוך המיוחד", authors="לא צוין", year="",
          cite="עבודה רב מקצועית בחינוך המיוחד.", url=None, file="עבודה רב מקצועית בחינוך המיוחד",
-         kind="article", placements=[("s2", "sped")]),
+         kind="article", placements=[("s2", "system")]),
     dict(id="manor2004", title="שיתוף פעולה בין צוותים רב-מקצועיים", authors="איריס מנור-בנימיני", year="2004",
          cite="מנור-בנימיני, א' (2004). שיתוף פעולה בין צוותים רב-מקצועיים. סוגיות בחינוך מיוחד ובשיקום, 19(2), 35-51.",
-         url=None, file="שיתוף פעולה בין צוותים רב מקצועיים", kind="article", placements=[("s2", "sped")]),
+         url=None, file="שיתוף פעולה בין צוותים רב מקצועיים", kind="article", placements=[("s2", "system")]),
     dict(id="benrey2016", title="פסיכולוגיה חינוכית מסביב לשעון: עבודת הפסיכולוג החינוכי בראי קהילתי", authors="מ' בן ריי וא' כנפי בליי", year="2016",
          cite="בן ריי, מ' וכנפי בליי, א' (18 בדצמבר 2016). פסיכולוגיה חינוכית מסביב לשעון: עבודת הפסיכולוג החינוכי בראי קהילתי. פסיכולוגיה עברית.",
-         url="https://www.hebpsy.net/articles.asp?id=3485", file=None, kind="article", placements=[("s2", "community")],
+         url="https://www.hebpsy.net/articles.asp?id=3485", file=None, kind="article", placements=[("s2", "system")],
          desc="מאמר על עבודת הפסיכולוג החינוכי בעדשה קהילתית."),
     # ---------- Year 4 ----------
     dict(id="binyamini1984", title="הפסיכולוג באוהל ובשדה: מבוא למחנאות מקצועית", authors="ק' בנימיני", year="1984",
@@ -209,7 +207,7 @@ ITEMS = [
          placements=[("s3", "system")]),
     dict(id="cohen_parenting", title="טיפול בהורות: הגישה האינטגרטיבית בעבודה עם הורים לילדים עם צרכים מיוחדים", authors="אסתר כהן (עורכת)", year="2017",
          cite="כהן, א' (עורכת) (2017). טיפול בהורות: גישה אינטגרטיבית לטיפול בבעיות ילדים באמצעות הוריהם. הוצאת אח.",
-         url=None, file=None, kind="book", placements=[("s3", "sped")],
+         url=None, file=None, kind="book", placements=[("s3", "system")],
          desc="פרק מתוך הספר \"טיפול בהורות\" של פרופ' אסתר כהן, על עבודה אינטגרטיבית עם הורים לילדים עם צרכים מיוחדים."),
     dict(id="corona2020", title="מצפן לפסיכולוגיה חינוכית מערכתית במשבר נגיף הקורונה", authors="החטיבה החינוכית, הסתדרות הפסיכולוגים", year="2020",
          cite="החטיבה החינוכית בהסתדרות הפסיכולוגים בישראל (6 באפריל 2020). מצפן לפסיכולוגיה חינוכית מערכתית במשבר נגיף הקורונה.",

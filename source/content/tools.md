@@ -244,7 +244,7 @@ WHEN: לתכנון השנה בגן, מאוגוסט ועד יוני, מול הג�
 
 
 ## TOOL: small-class-year | לוח עבודה שנתי בכיתה קטנה
-DOMAIN: sped
+DOMAIN: system
 SOURCES: tlv_smallclasses
 WHEN: כשיש בבית הספר שלך כיתת חינוך מיוחד, מלפני פתיחתה ועד סיכום השנה.
 ---
@@ -276,7 +276,7 @@ WHEN: כשיש בבית הספר שלך כיתת חינוך מיוחד, מלפנ
 
 
 ## TOOL: parents-team-meeting | ישיבת צוות והורים בחנ"מ: צ'קליסט לשיתוף פעולה
-DOMAIN: sped
+DOMAIN: system
 SOURCES: manor2004, sped_multi
 WHEN: לפני ישיבת מעבר (קליטה או פרידה), ישיבת תל"א או כל ישיבה רב-מקצועית עם הורים, ובמהלכה.
 ---
