@@ -7,6 +7,7 @@
 /* Layout concept: the kit as a Bauhaus-style grid (stages × domains) on cool "white city" paper;
    a calm reading column for summaries; one bold moment = the menu-course headings of the matrix. */
 :root{
+  --gold-text:#8C6508; --done-text:#24683F; --line-strong:#8D9AAE;
   --paper:#FFFFFF; --gold:#D29A12; --gold-soft:#FBF1D6; --on-gold:#2A1E00;
   --bg:#F3F6FA; --surface:#FFFFFF; --surface-2:#E8EEF6; --ink:#0F2340; --muted:#51607A; --line:#D2DCE9;
   --accent:#1A4FA0; --accent-soft:#E1EAF7; --on-accent:#FFFFFF;
@@ -17,12 +18,12 @@
   --radius:10px; --gutter-l:max(16px, env(safe-area-inset-left, 0px)); --gutter-r:max(16px, env(safe-area-inset-right, 0px));
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
+  --gold-text:#F0C04E; --done-text:#7FD3A0; --line-strong:#5D6E89; --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
   --accent:#86B2F2; --accent-soft:#15294A; --on-accent:#0A1426; --done:#6CC08F; --done-soft:#17301F; --warn:#E3B062;
   --d-general:#BCA986; --d-diag:#5DB6AF; --d-therapy:#E08BA2; --d-system:#8FA7E8; --d-emerg:#EE8B63; --d-sped:#96C66F; --d-community:#BE94DB;
   color-scheme:dark; } }
 :root[data-theme="dark"]{
-  --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
+  --gold-text:#F0C04E; --done-text:#7FD3A0; --line-strong:#5D6E89; --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
   --accent:#86B2F2; --accent-soft:#15294A; --on-accent:#0A1426; --done:#6CC08F; --done-soft:#17301F; --warn:#E3B062;
   --d-general:#BCA986; --d-diag:#5DB6AF; --d-therapy:#E08BA2; --d-system:#8FA7E8; --d-emerg:#EE8B63; --d-sped:#96C66F; --d-community:#BE94DB;
   color-scheme:dark; }
@@ -302,8 +303,8 @@ a.ref:hover{border-bottom-color:var(--accent)}
 
 /* ---------- outlines tabs ---------- */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;border-bottom:1px solid var(--line)}
-.tabs button{font:inherit;font-weight:700;font-size:16px;padding:10px 16px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;margin-bottom:-1px}
-.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs a{font-weight:700;font-size:16px;padding:10px 16px;border-bottom:3px solid transparent;color:var(--muted);text-decoration:none;margin-bottom:-1px}
+.tabs a[aria-current="true"]{color:var(--ink);border-bottom-color:var(--accent)}
 .note{font-size:15px;background:var(--surface-2);border-radius:8px;padding:10px 14px;margin-top:16px;max-width:72ch}
 
 footer{background:var(--surface)}
@@ -424,6 +425,13 @@ details.gl > summary .en{font-size:14px;color:var(--muted);direction:ltr;unicode
 details.gl > summary::after{content:"+";margin-inline-start:auto;color:var(--accent);font-weight:700;font-size:20px}
 details.gl[open] > summary::after{content:"−"}
 details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
+
+[hidden]{display:none!important}
+.nextup .eyebrow{color:var(--gold-text);filter:none}
+.btn.is-read{color:var(--done-text);border-color:var(--done-text)}
+.readbtn{border-color:var(--line-strong)}
+.search input,.filters input[type=search],.myyear select{border-color:var(--line-strong)}
+#readerBody:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 </style>
 
 <div id="app">
@@ -462,7 +470,7 @@ details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
       <a class="btn" id="readerExt" target="_blank" rel="noopener" hidden>למקור ↗</a>
     </div>
   </div>
-  <div class="reader-body" id="readerBody"><div class="reader-status" id="readerStatus" role="status"></div><div class="reader-pages" id="readerPages" dir="ltr"></div></div>
+  <div class="reader-body" id="readerBody" tabindex="0" aria-label="עמודי המסמך"><div class="reader-status" id="readerStatus" role="status"></div><div class="reader-pages" id="readerPages" dir="ltr"></div></div>
 </div>
 </div>
 
@@ -471,19 +479,19 @@ details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
 (function(){
 "use strict";
 const D = JSON.parse(document.getElementById('kit-data').textContent);
-const IT = Object.fromEntries(D.items.map(i => [i.id, i]));
-const ST = Object.fromEntries(D.stages.map(s => [s.id, s]));
-const DM = Object.fromEntries(D.domains.map(d => [d.id, d]));
-const TL = Object.fromEntries(D.tools.map(t => [t.id, t]));
+const dict = pairs => Object.assign(Object.create(null), Object.fromEntries(pairs));
+const IT = dict(D.items.map(i => [i.id, i]));
+const ST = dict(D.stages.map(s => [s.id, s]));
+const DM = dict(D.domains.map(d => [d.id, d]));
+const TL = dict(D.tools.map(t => [t.id, t]));
 const ALL_IDS = D.items.map(i => i.id);
 const $main = document.getElementById('main');
-document.documentElement.lang = 'he';
+document.documentElement.lang = 'he'; document.documentElement.dir = 'rtl';
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dcol = d => `var(--d-${d})`;
 const CHECK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const norm = s => String(s || '').replace(/[֑-ׇ]/g, '').replace(/["'״׳`\-–־]/g, '').replace(/\s+/g, ' ').toLowerCase().trim();
-const stageOf = it => it.placements.length ? it.placements[0][0] : null;
 const domainsOf = it => [...new Set(it.placements.map(p => p[1]))];
 const itemsIn = (stage, domain) => D.items.filter(i => i.placements.some(p => (!stage || p[0] === stage) && (!domain || p[1] === domain)));
 const ORDER = D.items.filter(i => i.placements.length).map(i => i.id);
@@ -529,7 +537,11 @@ const Store = {
     if (!this.ref) return;
     if (this.inflight){ this.again = true; return; }
     this.inflight = true;
-    try { await this.ref.set({ rec: this.rec }); }
+    try {
+      const snap = await this.ref.get();
+      if (snap.exists && this.merge((snap.data() || {}).rec)){ this.saveLocal(); this.emit(); }
+      await this.ref.set({ rec: this.rec });
+    }
     catch(e){
       const code = e && e.code;
       if (code === 'unavailable'){ setTimeout(() => this.schedule(0), 1500 + Math.random() * 1500); }
@@ -597,12 +609,14 @@ const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
 let pdfjsReady = null;
 function loadScript(src){ return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = src; sc.onload = res; sc.onerror = () => rej(new Error('script')); document.head.appendChild(sc); }); }
 function loadPdfJs(){
-  if (!pdfjsReady) pdfjsReady = loadScript(PDFJS + 'pdf.worker.min.js').then(() => loadScript(PDFJS + 'pdf.min.js')).then(() => {
+  // Let pdf.js run its real Web Worker; it falls back to the main thread by itself if workers are blocked.
+  if (!pdfjsReady) pdfjsReady = loadScript(PDFJS + 'pdf.min.js').then(() => {
     const L = window.pdfjsLib; L.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js'; return L;
   }).catch(e => { pdfjsReady = null; throw e; });
   return pdfjsReady;
 }
-const RD = { key: null, doc: null, zoom: 1, obs: null, token: 0, back: null, ratio: 1.414 };
+const RD = { key: null, doc: null, zoom: 1, obs: null, far: null, token: 0, back: null, pushed: false };
+const MAX_PX = 8e6; // cap pixels per page canvas (mobile memory limits)
 const $r = id => document.getElementById(id);
 function readerBase(){ const b = $r('readerBody'); const w = b.clientWidth - 32; return Math.max(240, Math.min(900, w)); }
 function sizePages(){
@@ -610,25 +624,44 @@ function sizePages(){
   document.querySelectorAll('#readerPages .rpage').forEach(d => { d.style.width = w + 'px'; });
   $r('zoomVal').textContent = Math.round(RD.zoom * 100) + '%';
 }
+function placeholder(div){
+  const c = div.querySelector('canvas'); if (c){ c.width = 0; c.height = 0; }
+  div.replaceChildren(Object.assign(document.createElement('span'), { className: 'rpage-n', textContent: div.dataset.p }));
+  div.dataset.w = '';
+}
 async function renderPage(div){
   const doc = RD.doc, tok = RD.token; if (!doc) return;
   const n = +div.dataset.p, w = div.clientWidth;
   if (div.dataset.w === String(w)) return;
   div.dataset.w = String(w);
+  const gen = div._gen = (div._gen || 0) + 1;
+  if (div._task){ try { div._task.cancel(); } catch(e){} }
   try {
     const page = await doc.getPage(n);
-    if (tok !== RD.token) return;
+    if (tok !== RD.token || gen !== div._gen) return;
     const v1 = page.getViewport({ scale: 1 });
     div.style.aspectRatio = v1.width + ' / ' + v1.height;
     const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-    const vp = page.getViewport({ scale: (w / v1.width) * dpr });
+    let sc = (w / v1.width) * dpr;
+    const px = v1.width * v1.height * sc * sc;
+    if (px > MAX_PX) sc *= Math.sqrt(MAX_PX / px);
+    const vp = page.getViewport({ scale: sc });
     const c = document.createElement('canvas');
     c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
-    c.setAttribute('aria-label', 'עמוד ' + n);
-    await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-    if (tok !== RD.token) return;
+    c.setAttribute('role', 'img'); c.setAttribute('aria-label', 'עמוד ' + n);
+    div._task = page.render({ canvasContext: c.getContext('2d'), viewport: vp });
+    await div._task.promise;
+    div._task = null;
+    page.cleanup();
+    if (tok !== RD.token || gen !== div._gen){ c.width = 0; c.height = 0; return; }
+    const old = div.querySelector('canvas'); if (old){ old.width = 0; old.height = 0; }
     div.replaceChildren(c);
-  } catch(e){ div.dataset.w = ''; }
+  } catch(e){ if (gen === div._gen) div.dataset.w = ''; }
+}
+function relayout(){
+  if (!RD.doc) return;
+  sizePages();
+  document.querySelectorAll('#readerPages .rpage').forEach(d => { d.dataset.w = ''; if (RD.obs){ RD.obs.unobserve(d); RD.obs.observe(d); } });
 }
 async function openReader(key, trigger){
   const f = fileFor(key); if (!f) return;
@@ -643,15 +676,27 @@ async function openReader(key, trigger){
   $r('readerPages').replaceChildren();
   const st = $r('readerStatus'); st.hidden = false; st.textContent = 'טוען את הקובץ…';
   $r('reader').hidden = false; document.body.style.overflow = 'hidden';
+  setInert(true);
+  if (!RD.pushed){ try { history.pushState({ reader: 1 }, ''); RD.pushed = true; } catch(e){} }
   $r('readerBody').scrollTop = 0; $r('readerClose').focus();
   $r('zoomVal').textContent = '100%';
   try {
     const [L, buf] = await Promise.all([loadPdfJs(), fetch(FDIR + f.pdf).then(r => { if (!r.ok) throw new Error('fetch'); return r.arrayBuffer(); })]);
     if (tok !== RD.token) return;
-    const doc = await L.getDocument({ data: buf, isEvalSupported: false }).promise;
+    const load = data => L.getDocument({ data, isEvalSupported: false }).promise;
+    let doc;
+    try {
+      doc = await Promise.race([load(buf.slice(0)), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000))]);
+    } catch(err){
+      // safety net: if the worker path fails in this view, run pdf.js on the main thread
+      if (tok !== RD.token) return;
+      if (!window.pdfjsWorker) await loadScript(PDFJS + 'pdf.worker.min.js');
+      doc = await load(buf);
+    }
     if (tok !== RD.token){ doc.destroy(); return; }
     RD.doc = doc;
-    const p1 = await doc.getPage(1); const v = p1.getViewport({ scale: 1 }); RD.ratio = v.height / v.width;
+    const p1 = await doc.getPage(1); if (tok !== RD.token) return;
+    const v = p1.getViewport({ scale: 1 });
     const frag = document.createDocumentFragment();
     for (let i = 1; i <= doc.numPages; i++){
       const d = document.createElement('div'); d.className = 'rpage'; d.dataset.p = i;
@@ -664,28 +709,40 @@ async function openReader(key, trigger){
     sizePages();
     if (RD.obs) RD.obs.disconnect();
     RD.obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) renderPage(e.target); }), { root: $r('readerBody'), rootMargin: '800px 0px' });
-    document.querySelectorAll('#readerPages .rpage').forEach(d => RD.obs.observe(d));
+    if (RD.far) RD.far.disconnect();
+    // release pages that scroll far away, so long documents don't pile up canvases in memory
+    RD.far = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting && e.target.querySelector('canvas')){ e.target._gen = (e.target._gen || 0) + 1; placeholder(e.target); } }), { root: $r('readerBody'), rootMargin: '2500px 0px' });
+    document.querySelectorAll('#readerPages .rpage').forEach(d => { RD.obs.observe(d); RD.far.observe(d); });
+    $r('readerBody').focus({ preventScroll: true });
   } catch(e){
     if (tok !== RD.token) return;
-    st.textContent = 'לא הצלחנו להציג את הקובץ כאן.' + (DL ? ' אפשר להוריד אותו בכפתור "הורדה".' : ' כדאי לנסות שוב מאוחר יותר.');
+    st.textContent = 'לא הצלחנו להציג את הקובץ כאן.' + (document.documentElement.classList.contains('can-dl') ? ' אפשר להוריד אותו בכפתור "הורדה".' : ' כדאי לנסות שוב מאוחר יותר.');
   }
 }
-function closeReader(){
+function setInert(on){ ['.top', '#main'].forEach(sel => { const el = document.querySelector(sel); if (el){ if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); } }); }
+function closeReader(fromPop){
+  if ($r('reader').hidden) return;
   RD.token++;
   if (RD.obs){ RD.obs.disconnect(); RD.obs = null; }
+  if (RD.far){ RD.far.disconnect(); RD.far = null; }
+  document.querySelectorAll('#readerPages canvas').forEach(c => { c.width = 0; c.height = 0; });
   if (RD.doc){ try { RD.doc.destroy(); } catch(e){} RD.doc = null; }
   $r('readerPages').replaceChildren();
   $r('reader').hidden = true; document.body.style.overflow = '';
+  setInert(false);
+  if (RD.pushed){ RD.pushed = false; if (!fromPop){ try { history.back(); } catch(e){} } }
   if (RD.back && document.contains(RD.back)) RD.back.focus();
 }
+window.addEventListener('popstate', () => { if (!$r('reader').hidden) closeReader(true); });
 function zoomBy(step){
   const z = Math.min(2.5, Math.max(0.5, Math.round((RD.zoom + step) * 100) / 100));
   if (z === RD.zoom || !RD.doc) return;
-  RD.zoom = z; sizePages();
-  document.querySelectorAll('#readerPages .rpage').forEach(d => { d.dataset.w = ''; if (RD.obs){ RD.obs.unobserve(d); RD.obs.observe(d); } });
+  RD.zoom = z; relayout();
 }
 let rsT = null;
-window.addEventListener('resize', () => { if ($r('reader').hidden || !RD.doc) return; clearTimeout(rsT); rsT = setTimeout(() => zoomBy(0.0001), 250); });
+const onReaderResize = () => { if ($r('reader').hidden || !RD.doc) return; clearTimeout(rsT); rsT = setTimeout(relayout, 200); };
+if ('ResizeObserver' in window){ let lastW = 0; new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w !== lastW){ lastW = w; onReaderResize(); } }).observe(document.getElementById('readerBody')); }
+else window.addEventListener('resize', onReaderResize);
 
 function itemCard(it){
   const tags = [];
@@ -839,17 +896,15 @@ function pageStage(sid){
   let n = 0, groups = '';
   D.domains.forEach(d => {
     const list = D.items.filter(i => i.placements.some(p => p[0] === sid && p[1] === d.id));
-    const isOpen = D.openCells.some(c => c[0] === sid && c[1] === d.id);
     if (!list.length) return;
     groups += `<section class="pgroup"><h2 class="group-title" style="--c:${dcol(d.id)}"><span class="dot"></span>${esc(d.long)} <a class="muted glink" href="#d-${d.id}">סקירת התחום</a></h2>`;
     groups += list.length ? `<ol class="path">${list.map(i => pathRow(i, ++n)).join('')}</ol>` : '';
     groups += '</section>';
   });
   const yset = new Set(ids);
-  const tools = D.tools.filter(t => t.sources.some(x => yset.has(x)));
   const terms = D.glossary.filter(g => g.sources.some(x => yset.has(x)));
   const res = D.resources.filter(r => r.stage === sid);
-  const exam = sid === 's3' ? `<section class="panel before"><div class="eyebrow">סוף ההתמחות</div><h2>הבחינה בתחום המערכתי</h2><p>מה מצופה לדעת בסוף ההתמחות, ותרשים זרימה להצגת מקרה מערכתי, .</p><div class="actions"><a class="btn primary" href="#exam">להכנה לבחינה</a></div></section>` : '';
+  const exam = sid === 's3' ? `<section class="panel before"><div class="eyebrow">סוף ההתמחות</div><h2>הבחינה בתחום המערכתי</h2><p>מה מצופה לדעת בסוף ההתמחות, ותרשים זרימה להצגת מקרה מערכתי.</p><div class="actions"><a class="btn primary" href="#exam">להכנה לבחינה</a></div></section>` : '';
   const prevS = D.stages[k - 1], nextS = D.stages[k + 1];
   return `${yearSwitch(sid)}
   <div class="year-head">
@@ -885,11 +940,9 @@ function pageDomain(did){
   let byStage = '';
   D.stages.forEach(s => {
     const list = D.items.filter(i => i.placements.some(p => p[0] === s.id && p[1] === did));
-    const isOpen = D.openCells.some(c => c[0] === s.id && c[1] === did);
     byStage += `<div class="group-title">${esc(s.label)} · ${esc(s.course)}</div>`;
     byStage += list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : `<p class="muted">—</p>`;
   });
-  const tools = D.tools.filter(t => t.domain === did);
   const terms = D.glossary.filter(g => g.domains.includes(did));
   return `<div class="pagehead"><div class="crumbs"><a class="chip" href="#domains">תחומים</a></div>
     <div class="domain-hero" style="--c:${dcol(did)}"><span class="sw"></span><div><div class="eyebrow">תחום · ${esc(d.label)}</div><h1>${esc(d.long)}</h1></div></div>
@@ -929,7 +982,6 @@ function pageItem(id){
   } else {
     body += `<div class="linkonly-box"><p>${esc(it.desc || '')}</p></div>`;
   }
-  const tools = D.tools.filter(t => t.sources.includes(id));
   const terms = D.glossary.filter(g => g.sources.includes(id));
   const ysid = stageOfItem(it);
   const ypath = ysid ? yearPath(ysid) : D.outlines.map(o => IT[o.item]);
@@ -937,12 +989,12 @@ function pageItem(id){
   const prev = idx > 0 ? ypath[idx - 1] : null, next = idx >= 0 && idx < ypath.length - 1 ? ypath[idx + 1] : null;
   const yl = ysid ? ST[ysid].label : 'המתווים';
   const posNote = idx >= 0 ? `<div class="ypos"><a href="#${ysid || 'outlines'}">${esc(yl)}${ysid ? ' · ' + esc(ST[ysid].course) : ''}</a> · פריט ${idx + 1} מתוך ${ypath.length}</div>` : '';
-  const level = it.inFolder && it.level ? `<div class="muted" style="font-size:14px;margin-top:6px">${esc(it.stype.split('(')[0].trim())}</div>` : '';
+  const level = it.inFolder && it.stype ? `<div class="muted" style="font-size:14px;margin-top:6px">${esc(it.stype.split('(')[0].trim())}</div>` : '';
   return `<div class="item-layout"><div>
     <div class="crumbs">${crumbs}</div>
     ${posNote}
     <div class="item-head"><h1>${esc(it.title)}</h1><div class="by">${byline(it)}</div>${level}</div>
-    <div class="actions">${readBtn(id, true)}${srcBtn.replace('class="btn"', 'class="btn"')}</div>
+    <div class="actions">${readBtn(id, true)}${srcBtn}</div>
     ${body}
     ${terms.length ? `<div class="related">
       ${terms.length ? `<h2>מושגים מהפריט</h2><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div>` : ''}
@@ -977,28 +1029,13 @@ function renderLib(){
     if (LIB.status === 'unread' && Store.isRead(i.id)) return false;
     if (LIB.avail === 'folder' && !i.file) return false;
     if (LIB.avail === 'url' && !i.url) return false;
-    if (LIB.avail === 'none' && (i.file || i.url)) return false;
-    if (q && !norm(i.title + ' ' + i.authors + ' ' + i.year + ' ' + i.search).includes(q)) return false;
+    if (q && !(i._n || (i._n = norm(i.title + ' ' + i.authors + ' ' + i.year + ' ' + i.search))).includes(q)) return false;
     return true;
   });
   el.innerHTML = `<p class="muted" style="margin:18px 0 10px">${list.length} פריטים</p>` + (list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : '<div class="empty-state">אין פריטים שמתאימים לסינון. אפשר לנקות חלק מהמסננים.</div>');
 }
 
 /* tools */
-function toolCard(t){ return `<a class="tool-card" href="#t-${t.id}"><b>${esc(t.title)}</b><span>${esc(t.when)}</span><span style="display:flex;gap:6px;align-items:center;--c:${dcol(t.domain)}"><span class="dot"></span>${esc(DM[t.domain].label)}</span></a>`; }
-function pageTools(){
-  let h = `<div class="pagehead"><h1>ארגז כלים</h1><p class="lede">צ'קליסטים, רצפי עבודה ומודלים לעבודה בשטח, מסודרים בערך לפי סדר השנים. כל כלי מפנה למקורות שלו.</p></div>`;
-  D.domains.forEach(d => { const ts = D.tools.filter(t => t.domain === d.id); if (!ts.length) return;
-    h += `<div class="group-title" style="--c:${dcol(d.id)}"><span class="dot"></span>${esc(d.long)}</div><div class="tool-grid">${ts.map(toolCard).join('')}</div>`; });
-  return h;
-}
-function pageTool(tid){
-  const t = TL[tid]; if (!t) return notFound();
-  return `<div class="pagehead"><div class="crumbs"><a class="chip" href="#tools">ארגז כלים</a>${domainChip(t.domain)}</div><h1>${esc(t.title)}</h1></div>
-    <div class="when"><b>מתי להשתמש:</b> ${esc(t.when)}</div>
-    <div class="sec prose">${t.html}</div>
-    <div class="related"><h2>מקורות</h2><div class="row">${t.sources.map(s => `<a class="chip" href="#i-${s}">${esc(IT[s].title)}</a>`).join('')}</div></div>`;
-}
 
 /* glossary */
 const GL = { q: '', domain: '' };
@@ -1014,7 +1051,7 @@ function pageGlossary(){
 function renderGlossary(){
   const el = document.getElementById('glList'); if (!el) return;
   const q = norm(GL.q);
-  const list = D.glossary.filter(g => (!GL.domain || g.domains.includes(GL.domain)) && (!q || norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q)));
+  const list = D.glossary.filter(g => (!GL.domain || g.domains.includes(GL.domain)) && (!q || (g._n || (g._n = norm(g.term + ' ' + g.en + ' ' + g.html.replace(/<[^>]+>/g, ' ')))).includes(q)));
   const by = {};
   list.forEach(g => { const L = firstLetter(g.term); (by[L] = by[L] || []).push(g); });
   document.getElementById('glLetters').innerHTML = LETTERS.map(L => `<button data-letter="${L}" ${by[L] ? '' : 'disabled'}>${L}</button>`).join('');
@@ -1031,7 +1068,7 @@ function pageOutlines(){
   const o = D.outlines.find(x => x.id === OUT_TAB) || D.outlines[0];
   const it = IT[o.item];
   return `<div class="pagehead"><h1>מתווי עבודה</h1><p class="lede">המתווים עומדים בפני עצמם ואינם חלק מרשימת הקריאה של שנה מסוימת. הם המסמכים שמגדירים מה נכלל בעבודת הפסיכולוג בכל מסגרת. הם הבסיס לשיחה עם המנהל או הגננת על תוכנית העבודה השנתית.</p></div>
-  <div class="tabs" role="tablist">${D.outlines.map(x => `<button role="tab" data-tab="${x.id}" aria-selected="${x.id === o.id}">${esc(x.label)}</button>`).join('')}</div>
+  <div class="tabs">${D.outlines.map(x => `<a href="#o-${x.id}" class="tab" aria-current="${x.id === o.id ? 'true' : 'false'}">${esc(x.label)}</a>`).join('')}</div>
   ${o.note ? `<p class="note">${esc(o.note)}</p>` : ''}
   <div class="item-head" style="margin-top:22px"><h2 style="font-size:28px">${esc(it.title)}</h2><div class="by">${byline(it)}</div></div>
   <div class="actions">${readBtn(it.id, true)}<a class="btn" href="#i-${it.id}">לסיכום המלא</a></div>
@@ -1059,13 +1096,11 @@ function pageSearch(){
   if (!q) return `<div class="pagehead"><h1>חיפוש</h1><p class="lede">אפשר לחפש מאמר, מחבר או מושג בתיבת החיפוש למעלה.</p></div>`;
   const items = D.items.map(i => { const t = norm(i.title + ' ' + i.authors); const s = norm(i.search);
     return [i, t.includes(q) ? 3 : s.includes(q) ? 1 : 0]; }).filter(x => x[1]).sort((a, b) => b[1] - a[1]).map(x => x[0]);
-  const tools = [];
   const terms = D.glossary.filter(g => norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q));
-  const none = !items.length && !tools.length && !terms.length;
+  const none = !items.length && !terms.length;
   return `<div class="pagehead"><h1>תוצאות עבור "${esc(SEARCH_Q)}"</h1><p class="lede">${items.length} פריטים · ${terms.length} מושגים</p></div>
     ${none ? '<div class="empty-state">לא נמצאו תוצאות. אפשר לנסות מילה אחרת או חלק ממילה.</div>' : ''}
     ${terms.length ? `<div class="section-head"><h2>מושגים</h2></div><div class="related"><div class="row">${terms.slice(0, 30).map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
-    ${tools.length ? `<div class="section-head"><h2>כלים</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
     ${items.length ? `<div class="section-head"><h2>פריטים</h2></div><div class="cards">${items.map(itemCard).join('')}</div>` : ''}`;
 }
 
@@ -1092,39 +1127,64 @@ function notFound(){ return `<div class="empty-state"><h1 style="font-size:28px"
 
 /* ================= router ================= */
 let CUR = '';
+const own = (o, k) => (o && Object.prototype.hasOwnProperty.call(o, k)) ? o[k] : undefined;
+const SCROLL = Object.create(null);
+let POP = false;
+window.addEventListener('popstate', () => { POP = true; });
 function current(){ return (location.hash || '#home').slice(1) || 'home'; }
+function route(r){
+  if (r === 'home') return [pageHome(), 'home'];
+  if (/^s[123]$/.test(r)) return [pageStage(r), r];
+  if (r === 'map') return [pageMap(), ''];
+  if (r === 'domains') return [pageDomains(), ''];
+  if (r.startsWith('d-') && own(DM, r.slice(2))) return [pageDomain(r.slice(2)), ''];
+  if (r.startsWith('i-') && own(IT, r.slice(2))){ const itx = IT[r.slice(2)]; return [pageItem(itx.id), stageOfItem(itx) || 'outlines']; }
+  if (r === 'library' || r === 'tools') return [pageLibrary(), 'library'];
+  if (r.startsWith('t-') && own(TL, r.slice(2))) return ['REDIRECT', TL[r.slice(2)]];
+  if (r === 'glossary') return [pageGlossary(), 'glossary'];
+  if (r === 'outlines' || r.startsWith('o-')){ const t = r.slice(2); if (t && D.outlines.some(o => o.id === t)) OUT_TAB = t; return [pageOutlines(), 'outlines']; }
+  if (r === 'exam') return [pageExam(), 's3'];
+  if (r === 'sources') return [pageSources(), 'sources'];
+  if (r === 'search' || r.startsWith('q-')){ if (r.startsWith('q-')){ try { SEARCH_Q = decodeURIComponent(r.slice(2)); } catch(e){ SEARCH_Q = r.slice(2); } } return [pageSearch(), '']; }
+  return [notFound(), ''];
+}
+function snapshotUI(){
+  const open = [...$main.querySelectorAll('details')].map(d => d.open);
+  const a = document.activeElement; let focus = null;
+  if (a && $main.contains(a)){ for (const k of ['toggle', 'tab', 'read', 'term', 'f', 'g']) if (a.dataset && a.dataset[k] != null){ focus = `[data-${k}="${CSS.escape(a.dataset[k])}"]`; break; } if (!focus && a.id) focus = '#' + CSS.escape(a.id); }
+  return { open, focus };
+}
+function restoreUI(ui){
+  const ds = $main.querySelectorAll('details');
+  if (ds.length === ui.open.length) ds.forEach((d, i) => { d.open = ui.open[i]; });
+  if (ui.focus){ const el = $main.querySelector(ui.focus); if (el) el.focus({ preventScroll: true }); }
+}
 function render(keepScroll){
   const r = current();
   const y = window.scrollY;
-  let html, navKey = '';
-  if (r === 'home'){ html = pageHome(); navKey = 'home'; }
-  else if (/^s[123]$/.test(r)){ html = pageStage(r); navKey = r; }
-  else if (r === 'map'){ html = pageMap(); }
-  else if (r === 'domains'){ html = pageDomains(); }
-  else if (r.startsWith('d-') && DM[r.slice(2)]){ html = pageDomain(r.slice(2)); }
-  else if (r.startsWith('i-')){ html = pageItem(r.slice(2)); const itx = IT[r.slice(2)]; navKey = itx && stageOfItem(itx) ? stageOfItem(itx) : 'outlines'; }
-  else if (r === 'library'){ html = pageLibrary(); navKey = 'library'; }
-  else if (r === 'tools'){ html = pageLibrary(); navKey = 'library'; }
-  else if (r.startsWith('t-')){ const tt = TL[r.slice(2)]; if (tt){ location.replace('#i-' + tt.sources[0]); return; } html = notFound(); }
-  else if (r === 'glossary'){ html = pageGlossary(); navKey = 'glossary'; }
-  else if (r === 'outlines'){ html = pageOutlines(); navKey = 'outlines'; }
-  else if (r === 'exam'){ html = pageExam(); navKey = 's3'; }
-  else if (r === 'sources'){ html = pageSources(); navKey = 'sources'; }
-  else if (r === 'search'){ html = pageSearch(); }
-  else html = notFound();
+  const ui = keepScroll ? snapshotUI() : null;
+  if (!keepScroll && CUR) SCROLL[CUR] = y;
+  let html, navKey;
+  try { [html, navKey] = route(r); } catch(err){ html = notFound(); navKey = ''; }
+  if (html === 'REDIRECT'){ const t = navKey; location.replace('#i-' + t.sources[0]); setTimeout(() => { const d = document.getElementById('tool-' + t.id); if (d){ d.open = true; d.scrollIntoView({ block: 'start' }); } }, 60); return; }
   $main.innerHTML = html;
   document.querySelectorAll('#nav a').forEach(a => { if (a.dataset.r === navKey) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (r === 'library') renderLib();
   if (r === 'glossary') renderGlossary();
-  if (keepScroll) window.scrollTo(0, y);
-  else if (r !== CUR) window.scrollTo(0, 0);
+  if (keepScroll){ restoreUI(ui); window.scrollTo(0, y); }
+  else if (r !== CUR){
+    const h1 = $main.querySelector('h1');
+    document.title = (h1 && r !== 'home' ? h1.textContent.trim() + ' · ' : '') + 'קיט ההתמחות';
+    window.scrollTo(0, POP && SCROLL[r] != null ? SCROLL[r] : 0);
+    if (CUR){ const tgt = h1 || $main; tgt.setAttribute('tabindex', '-1'); tgt.focus({ preventScroll: true }); }
+  }
+  POP = false;
   CUR = r;
 }
-window.addEventListener('hashchange', () => render(false));
+window.addEventListener('hashchange', () => { if (!$r('reader').hidden) closeReader(true); render(false); });
 Store.on(() => {
-  // refresh read states in place without jumping
   const r = current();
-  if (r === 'library'){ renderLib(); const n = document.getElementById('storeNote'); if (n) n.textContent = storeNote(); return; }
+  if (r === 'library'){ const ui = snapshotUI(); renderLib(); restoreUI(ui); const n = document.getElementById('storeNote'); if (n) n.textContent = storeNote(); return; }
   render(true);
 });
 
@@ -1165,8 +1225,6 @@ document.addEventListener('click', e => {
   const term = e.target.closest('[data-term]');
   if (term){ GL.q = term.dataset.term; GL.domain = ''; if (current() === 'glossary') render(false); else location.hash = '#glossary';
     setTimeout(() => { const el = document.querySelector(`.gl[data-gterm="${CSS.escape(term.dataset.term)}"]`); if (el){ el.open = true; el.scrollIntoView({ block: 'start' }); } }, 30); return; }
-  const tab = e.target.closest('[data-tab]');
-  if (tab){ OUT_TAB = tab.dataset.tab; render(true); return; }
   const cp = e.target.closest('[data-copy]');
   if (cp){ const txt = cp.dataset.copy; const done = () => { cp.textContent = 'הועתק'; setTimeout(() => cp.textContent = 'העתקה', 1500); };
     try { navigator.clipboard.writeText(txt).then(done, () => selectText(cp)); } catch(err){ selectText(cp); } return; }
@@ -1174,14 +1232,16 @@ document.addEventListener('click', e => {
 function selectText(btn){ const p = btn.parentElement.querySelector('p'); if (!p) return; const rg = document.createRange(); rg.selectNodeContents(p); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$r('reader').hidden) closeReader(); });
 document.addEventListener('change', e => { if (e.target.id === 'myYearSel'){ setMyYear(e.target.value); render(true); } });
+let inT = null;
 document.addEventListener('input', e => {
-  if (e.target.id === 'libq'){ LIB.q = e.target.value; renderLib(); }
-  if (e.target.id === 'glq'){ GL.q = e.target.value; renderGlossary(); }
+  if (e.target.id === 'libq'){ LIB.q = e.target.value; clearTimeout(inT); inT = setTimeout(renderLib, 120); }
+  if (e.target.id === 'glq'){ GL.q = e.target.value; clearTimeout(inT); inT = setTimeout(renderGlossary, 120); }
 });
 document.getElementById('searchForm').addEventListener('submit', e => {
   e.preventDefault();
   SEARCH_Q = document.getElementById('q').value.trim();
-  if (current() === 'search') render(false); else location.hash = '#search';
+  const h = SEARCH_Q ? '#q-' + encodeURIComponent(SEARCH_Q) : '#search';
+  if (location.hash === h) render(false); else location.hash = h;
 });
 
 render(false);

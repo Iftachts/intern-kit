@@ -3,8 +3,9 @@
 import json, re, os, html
 import markdown
 
-BASE = "/home/claude/build"
-SUMM = "/home/claude/summaries"
+from pathlib import Path as _P
+BASE = str(_P(__file__).resolve().parent)
+SUMM = str(_P(BASE) / "summaries") if (_P(BASE) / "summaries").is_dir() else "/home/claude/summaries"
 exec(open(f"{BASE}/meta.py", encoding="utf-8").read())
 
 REF = {
@@ -35,24 +36,40 @@ assert set(REF) == ids, (set(REF) ^ ids)
 LIST_RE = re.compile(r"^(\s*)([-*+]|\d+[.)])\s+")
 
 def normalize_md(text):
-    """Make agent-written markdown safe for python-markdown: 4-space nesting, blank lines before lists/tables."""
+    """Make agent-written markdown safe for python-markdown: 4-space nesting (from an indent stack),
+    blank lines before lists/tables."""
     out = []
     prev = ""
+    stack = []  # indents of the list levels currently open
     for line in text.split("\n"):
         m = LIST_RE.match(line)
         if m:
-            ind = len(m.group(1).replace("\t", "    "))
-            level = (ind + 1) // 2 if ind not in (0, 4, 8, 12) else ind // 4
+            ind = len(m.group(1).expandtabs(4))
+            while stack and ind < stack[-1]:
+                stack.pop()
+            if not stack or ind > stack[-1]:
+                stack.append(ind)
+            level = len(stack) - 1
             line = "    " * level + line.lstrip()
             prev_is_list = bool(LIST_RE.match(prev)) or (prev.startswith("    ") and prev.strip())
             if prev.strip() and not prev_is_list and level == 0:
                 out.append("")
+            pm = LIST_RE.match(prev)
+            if pm and len(pm.group(1)) == len("    " * level) and (pm.group(2)[0].isdigit() != m.group(2)[0].isdigit()):
+                out.append("")  # list type switches (1. -> -): start a new list
         elif line.lstrip().startswith("|"):
+            stack = []
             line = line.strip()
             if prev.strip() and not prev.strip().startswith("|"):
                 out.append("")
-        elif line.strip() and prev.strip().startswith("|") and not line.strip().startswith("|"):
-            out.append("")
+        else:
+            if line.strip() and not line[0].isspace():
+                stack = []
+            elif line.strip() and stack:
+                # continuation text of a list item: indent to its level's content column
+                line = "    " * len(stack) + line.lstrip()
+            if line.strip() and prev.strip().startswith("|") and not line.strip().startswith("|"):
+                out.append("")
         out.append(line)
         prev = line
     return "\n".join(out)
@@ -154,7 +171,9 @@ for block in re.split(r"^### ", g_txt, flags=re.M)[1:]:
     he, _, en = head.partition("|")
     f = dict(re.findall(r"^(DOMAINS|SOURCES):\s*(.*)$", rest, flags=re.M))
     body = re.sub(r"^(DOMAINS|SOURCES):.*$", "", rest, flags=re.M).strip()
-    srcs = [s.strip() for s in f.get("SOURCES", "").split(",") if s.strip() in ids]
+    srcs = [s.strip() for s in f.get("SOURCES", "").split(",") if s.strip()]
+    bad = [x for x in srcs if x not in ids]
+    assert not bad, (he, bad)
     gloss.append(dict(term=he.strip(), en=en.strip(), domains=[x.strip() for x in f.get("DOMAINS", "").split(",") if x.strip()],
                       sources=srcs, html=refs_to_links(md(body))))
 
@@ -171,8 +190,23 @@ data = dict(stages=STAGES, domains=DOMAINS, items=items, tools=tools, glossary=g
             domainText=domains_text, resources=RESOURCES, openCells=[list(c) for c in OPEN_CELLS],
             outlines=OUTLINES, kitFile=FILES["kit"])
 s = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
-s = s.replace("</", "<\\/")
+s = s.replace("<", "\\u003c")
 open(f"{BASE}/data.json", "w", encoding="utf-8").write(s)
 print("items", len(items), "tools", len(tools), "glossary", len(gloss), "bytes", len(s.encode()))
-unresolved = re.findall(r"\[\[[^\]]+\]\]", s)
-print("unresolved refs:", unresolved[:5])
+unresolved = re.findall(r"\[\[([a-z0-9_]+)\]\]", s)
+assert not unresolved, ("unresolved refs", unresolved[:5])
+broken_lists = re.findall(r"<li>[^<]*\\n\s*[-*+] ", s)
+assert not broken_lists, ("lists rendered as text", len(broken_lists), broken_lists[:2])
+print("checks: refs ok, lists ok")
+
+# assemble the page: <build dir>/kit.html (artifact body) and ../index.html (standalone site)
+_tpl = os.path.join(BASE, "template.html")
+if os.path.exists(_tpl):
+    body = open(_tpl, encoding="utf-8").read().replace("/*__DATA__*/", s)
+    open(os.path.join(BASE, "kit.html"), "w", encoding="utf-8").write(body)
+    skel = ('<!doctype html>\n<html lang="he" dir="rtl"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+            '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}'
+            'body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body>\n')
+    open(os.path.join(BASE, "..", "index.html"), "w", encoding="utf-8").write(skel + body + "\n</body></html>\n")
+    print("wrote kit.html and ../index.html")

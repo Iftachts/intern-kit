@@ -28,4 +28,11 @@ python3 -m http.server
 
 ## עדכון התוכן
 
-עורכים את קובצי ה-Markdown או את `meta.py`, ואז מריצים את `build.py` ו-`assemble.sh` (הנתיבים בהם מוגדרים כרגע לסביבת הבנייה המקורית תחת `/home/claude/build`, וצריך להתאים אותם).
+עורכים את קובצי ה-Markdown או את `source/meta.py`, ומריצים:
+
+```
+pip install markdown
+python3 source/build.py
+```
+
+הסקריפט בודק שאין הפניות שבורות או רשימות שבורות, ובונה מחדש את `index.html`.
