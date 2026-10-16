@@ -1,0 +1,1155 @@
+<title>קיט ההתמחות בפסיכולוגיה חינוכית</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: the kit as a Bauhaus-style grid (stages × domains) on cool "white city" paper;
+   a calm reading column for summaries; one bold moment = the menu-course headings of the matrix. */
+:root{
+  --paper:#FFFFFF; --gold:#D29A12; --gold-soft:#FBF1D6; --on-gold:#2A1E00;
+  --bg:#F3F6FA; --surface:#FFFFFF; --surface-2:#E8EEF6; --ink:#0F2340; --muted:#51607A; --line:#D2DCE9;
+  --accent:#1A4FA0; --accent-soft:#E1EAF7; --on-accent:#FFFFFF;
+  --font-ui:"Heebo","Assistant","Segoe UI",Arial,sans-serif; --done:#2C7A4C; --done-soft:#DDEFE4; --warn:#9A5B0B;
+  --d-general:#857559; --d-diag:#2B7A76; --d-therapy:#AE4C66; --d-system:#3D5BA5; --d-emerg:#BE4E28; --d-sped:#58873A; --d-community:#8458A4;
+  --font-display:"Frank Ruhl Libre","David Libre","Times New Roman",serif;
+  --font-body:"Assistant","Segoe UI","Arial Hebrew",Arial,sans-serif;
+  --radius:10px; --gutter-l:max(16px, env(safe-area-inset-left, 0px)); --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
+  --accent:#86B2F2; --accent-soft:#15294A; --on-accent:#0A1426; --done:#6CC08F; --done-soft:#17301F; --warn:#E3B062;
+  --d-general:#BCA986; --d-diag:#5DB6AF; --d-therapy:#E08BA2; --d-system:#8FA7E8; --d-emerg:#EE8B63; --d-sped:#96C66F; --d-community:#BE94DB;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --paper:#F4F4F2; --gold:#F0C04E; --gold-soft:#3A2E10; --on-gold:#1E1600; --bg:#0A1426; --surface:#101D33; --surface-2:#17273F; --ink:#E6ECF5; --muted:#9BAAC2; --line:#22344F;
+  --accent:#86B2F2; --accent-soft:#15294A; --on-accent:#0A1426; --done:#6CC08F; --done-soft:#17301F; --warn:#E3B062;
+  --d-general:#BCA986; --d-diag:#5DB6AF; --d-therapy:#E08BA2; --d-system:#8FA7E8; --d-emerg:#EE8B63; --d-sped:#96C66F; --d-community:#BE94DB;
+  color-scheme:dark; }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+#app{direction:rtl}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.2;margin:0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- header ---------- */
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.top-in{display:flex;align-items:center;gap:20px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--font-display);font-weight:900;font-size:21px;white-space:nowrap}
+.brand svg{flex:none}
+.nav{display:flex;gap:2px;flex-wrap:wrap;flex:1;min-width:0}
+.nav a{padding:6px 10px;border-radius:7px;text-decoration:none;color:var(--muted);font-weight:600;font-size:15px}
+.nav a:hover{color:var(--ink);background:var(--surface-2)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--accent-soft)}
+.search{display:flex;min-width:0}
+.search input{font:inherit;font-size:15px;width:210px;max-width:100%;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+@media (max-width:820px){
+  .top{position:static}
+  .top-in{gap:8px}
+  .search{order:2;flex:1 1 100%} .search input{width:100%}
+  .nav{order:3;flex:1 1 100%;gap:0}
+  .nav a{padding:5px 8px;font-size:14px}
+}
+
+main{padding-block:28px 56px;min-height:60vh}
+
+/* ---------- generic pieces ---------- */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink);text-decoration:none;white-space:nowrap}
+.chip .dot,.dot{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none;background:var(--c,var(--muted))}
+.tag{font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 6px;white-space:nowrap}
+.tag.link{border-style:dashed}
+.btn{font:inherit;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.is-read{background:var(--done-soft);color:var(--done);border-color:var(--done)}
+.readbtn{font:inherit;width:30px;height:30px;flex:none;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:transparent;cursor:pointer;display:grid;place-items:center}
+.readbtn:hover{border-color:var(--done)}
+.readbtn[aria-pressed="true"]{background:var(--done);border-color:var(--done);color:var(--surface)}
+.readbtn svg{width:16px;height:16px}
+.bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bar > i{display:block;height:100%;background:var(--done);border-radius:3px;transition:width .3s}
+@media (prefers-reduced-motion:reduce){.bar > i{transition:none}}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-block:40px 14px}
+.section-head h2{font-size:26px}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+.hero h1{font-size:clamp(34px,5vw,54px);font-weight:900;letter-spacing:-.01em}
+.hero .lede{font-size:18px;color:var(--muted);max-width:56ch;margin:12px 0 0}
+.orient{max-width:72ch}
+.orient h4{display:none}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.progress-panel h2{font-size:20px;margin-bottom:6px}
+.big-num{font-family:var(--font-display);font-weight:900;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.prog-rows{display:grid;gap:10px;margin-top:16px}
+.prog-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:14px}
+.prog-row .bar{grid-column:1/-1}
+.prog-row span:last-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+.store-note{font-size:13px;color:var(--muted);margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.next-up{margin-top:14px;font-size:15px}
+.next-up a{font-weight:600}
+
+/* matrix */
+.mx-wrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.matrix{display:grid;grid-template-columns:minmax(118px,.62fr) repeat(3,minmax(0,1fr))}
+.matrix > div{border-bottom:1px solid var(--line);padding:12px 14px;min-width:0}
+.matrix > div:not(.mx-rowhead):not(.mx-corner){border-inline-start:1px solid var(--line)}
+.mx-corner{background:var(--surface-2);font-size:13px;color:var(--muted);display:flex;align-items:flex-end}
+.mx-stagehead{background:var(--surface-2);padding-block:16px 12px!important}
+.mx-stagehead a{text-decoration:none;color:inherit;display:block}
+.mx-stagehead .course{font-family:var(--font-display);font-weight:900;font-size:28px;line-height:1.05;display:block}
+.mx-stagehead .yr{font-size:14px;font-weight:600;color:var(--muted)}
+.mx-stagehead .bar{margin-top:10px}
+.mx-rowhead{display:flex;flex-direction:column;gap:6px}
+.mx-rowhead a{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;color:var(--ink);text-decoration:none}
+.mx-rowhead a:hover{color:var(--accent)}
+.mx-rowhead .dot{width:11px;height:11px}
+.mx-rowhead small{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mx-cell ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.mx-cell li{display:flex;gap:7px;align-items:flex-start;font-size:14px;line-height:1.35}
+.mx-cell li a{color:var(--ink);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mx-cell li a:hover{color:var(--accent);text-decoration:underline}
+.mx-cell li.linkonly a{color:var(--muted)}
+.mx-cell .st{flex:none;width:9px;height:9px;margin-top:4px;border-radius:50%;border:1.5px solid var(--muted)}
+.mx-cell li.read .st{background:var(--done);border-color:var(--done)}
+.mx-cell .lk{flex:none;font-size:11px;color:var(--muted);margin-top:1px}
+.mx-empty{font-size:13px;color:var(--muted)}
+.mx-open{font-size:13px;color:var(--warn);font-weight:600}
+.mx-res{background:var(--surface-2)}
+.mx-res ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px}
+.mx-cell[data-stage]::before,.mx-res[data-stage]::before{display:none}
+@media (max-width:760px){
+  .matrix{display:block}
+  .matrix > div{border-inline-start:0!important}
+  .mx-corner,.mx-stagehead{display:none}
+  .mx-rowhead{background:var(--surface-2);padding-top:14px!important}
+  .mx-cell[data-stage]::before,.mx-res[data-stage]::before{display:block;content:attr(data-stage);font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend .st{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);display:inline-block}
+.legend .st.on{background:var(--done);border-color:var(--done)}
+
+.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.quick a{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.quick a:hover{border-color:var(--accent)}
+.quick b{display:block;font-family:var(--font-display);font-size:20px}
+.quick span{font-size:14px;color:var(--muted)}
+@media (max-width:900px){.hero{grid-template-columns:1fr}.quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- year-first ---------- */
+.nav .yr-link{color:var(--ink);font-weight:500}
+.nav .yr-link b{font-weight:700}
+.nav-sep{width:1px;background:var(--line);margin:4px 6px;align-self:stretch}
+.home-hero h1{font-size:clamp(34px,5vw,54px);font-weight:900}
+.home-hero .lede{font-size:18px;color:var(--muted);max-width:62ch;margin:12px 0 0}
+.myyear{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:15px}
+.myyear select{font:inherit;font-size:15px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.year-track{display:flex;align-items:stretch;gap:10px;margin-top:26px}
+.yt-arrow{align-self:center;font-size:26px;color:var(--muted);flex:none}
+.yt-card{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;position:relative}
+.yt-card:hover{border-color:var(--accent)}
+.yt-card.is-cur{border:2px solid var(--accent);padding:17px 17px 15px}
+.yt-yr{font-size:14px;font-weight:700;color:var(--muted)}
+.yt-course{font-family:var(--font-display);font-weight:900;font-size:32px;line-height:1.05}
+.yt-meta{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.yt-here{position:absolute;top:12px;inset-inline-end:12px;font-size:12px;font-weight:700;color:var(--on-accent);background:var(--accent);border-radius:999px;padding:2px 9px}
+@media (max-width:760px){.year-track{flex-direction:column}.yt-arrow{transform:rotate(-90deg)}}
+.home-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;margin-top:20px;align-items:start}
+@media (max-width:900px){.home-grid{grid-template-columns:1fr}}
+.nextup h2{font-size:24px;margin-top:6px}
+.nextup h2 a{color:var(--ink);text-decoration:none}
+.nextup h2 a:hover{color:var(--accent)}
+.nextup .by{color:var(--muted);font-size:15px;margin-top:4px}
+.nextup p{font-size:16px;color:var(--muted);max-width:68ch}
+.ysw{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:22px;color:var(--muted)}
+.ysw a{text-decoration:none;color:var(--muted);font-size:14px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.ysw a b{color:var(--ink)}
+.ysw a[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.ysw a[aria-current="page"] b{color:var(--bg)}
+.year-head{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:end}
+@media (max-width:900px){.year-head{grid-template-columns:1fr}}
+.panel.before{margin-top:26px;max-width:860px}
+.panel.before h2{font-size:22px;margin:4px 0 6px}
+.panel.before p{margin:0 0 10px;color:var(--muted)}
+.pgroup{margin-top:8px}
+.pgroup .group-title{font-family:var(--font-body)}
+.glink{font-size:13px;font-weight:500;margin-inline-start:8px}
+.path{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:900px;border-top:1px solid var(--line)}
+.prow{display:flex;gap:12px;align-items:flex-start;padding:14px 4px;border-bottom:1px solid var(--line)}
+.pnum{flex:none;width:28px;font-family:var(--font-display);font-weight:900;font-size:20px;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums;line-height:30px}
+.pmain{flex:1;min-width:0}
+.ptitle{font-weight:700;font-size:17px;color:var(--ink);text-decoration:none;line-height:1.35}
+.ptitle:hover{color:var(--accent);text-decoration:underline}
+.prow .by{font-size:14px;color:var(--muted)}
+.prow p{margin:6px 0 0;font-size:15px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prow .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.prow.read .ptitle{color:var(--muted)}
+.prow.read .pnum{color:var(--done)}
+.path.compact{border-top:0}
+.path.compact .prow{padding:8px 0}
+.ypos{font-size:14px;color:var(--muted);margin-bottom:8px}
+.ypos a{font-weight:700;text-decoration:none}
+
+/* ---------- cards / lists ---------- */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;gap:12px;align-items:flex-start;min-width:0}
+.card-main{flex:1;min-width:0}
+.card h3{font-family:var(--font-body);font-size:17px;font-weight:700;line-height:1.35}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{color:var(--accent);text-decoration:underline}
+.card .by{font-size:14px;color:var(--muted);margin-top:2px}
+.card p{margin:8px 0 0;font-size:15px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.group-title{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;margin:26px 0 10px}
+
+/* ---------- page heads ---------- */
+.pagehead{max-width:820px}
+.pagehead h1{font-size:clamp(30px,4.2vw,44px);font-weight:900}
+.pagehead .lede{font-size:18px;color:var(--muted);margin:10px 0 0}
+.crumbs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+
+/* ---------- item page ---------- */
+.item-layout{display:grid;grid-template-columns:minmax(0,780px) 220px;justify-content:space-between;gap:40px;align-items:start}
+.item-toc{position:sticky;top:90px;font-size:14px}
+.item-toc b{display:block;font-size:12px;color:var(--muted);letter-spacing:.04em;margin-bottom:8px}
+.item-toc button{display:block;width:100%;text-align:start;background:none;border:0;border-inline-start:2px solid var(--line);padding:5px 12px;color:var(--muted);font:inherit;font-size:14px;cursor:pointer}
+.item-toc button:hover{color:var(--ink);border-color:var(--accent)}
+@media (max-width:980px){.item-layout{grid-template-columns:1fr}.item-toc{display:none}}
+.item-head h1{font-size:clamp(28px,4vw,40px);font-weight:900}
+.item-head .by{font-size:17px;color:var(--muted);margin-top:8px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.abstract{font-size:18px;line-height:1.8;margin-top:26px;padding:20px 22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);max-width:72ch}
+.abstract p{margin:0}
+.sec{margin-top:36px;max-width:72ch;scroll-margin-top:90px}
+.sec > h2{font-size:24px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec > h2 .n{font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 7px}
+.prose{font-size:17px;line-height:1.75}
+.prose p{margin:.6em 0}
+.prose ul,.prose ol{padding-inline-start:1.4em;margin:.5em 0}
+.prose li{margin:.3em 0}
+.prose li > ul,.prose li > ol{margin:.2em 0}
+.prose h3{font-size:19px;margin:1.5em 0 .4em}
+.prose h4{font-size:16px;font-family:var(--font-body);font-weight:700;margin:1.3em 0 .3em}
+.prose strong{font-weight:700}
+.prose blockquote{margin:.8em 0;padding:.7em 1em;background:var(--surface-2);border-radius:8px;color:var(--muted);font-size:15px}
+.prose blockquote p{margin:.2em 0}
+.prose code{font-size:.9em}
+.tablewrap{overflow-x:auto;margin:.8em 0;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prose table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
+.prose th,.prose td{text-align:start;vertical-align:top;padding:.55em .75em;border-bottom:1px solid var(--line)}
+.prose th{background:var(--surface-2);font-weight:700}
+.prose tr:last-child td{border-bottom:0}
+.sec-quotes .prose li,.sec-quotes .prose p{font-family:var(--font-display);font-size:19px;line-height:1.6}
+.sec-quotes .prose ul{list-style:none;padding:0}
+.sec-quotes .prose li{padding-block:8px;border-bottom:1px solid var(--line)}
+details.more{margin-top:28px;max-width:72ch;border-top:1px solid var(--line);padding-top:12px}
+details.more summary{cursor:pointer;font-weight:700;font-size:16px;color:var(--muted)}
+details.more .prose{font-size:15px}
+.cite{margin-top:30px;max-width:72ch;font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.cite p{margin:0;flex:1}
+.linkonly-box{margin-top:24px;max-width:68ch;padding:18px 20px;border:1px dashed var(--line);border-radius:var(--radius);background:var(--surface)}
+.linkonly-box p{margin:0 0 10px;font-size:17px}
+.related{margin-top:44px;max-width:72ch}
+.related h2{font-size:20px;margin-bottom:10px}
+.related .row{display:flex;gap:8px;flex-wrap:wrap}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px;max-width:72ch;flex-wrap:wrap}
+.pager a{font-size:15px;text-decoration:none;max-width:48%}
+.pager small{display:block;color:var(--muted);font-size:12px}
+a.ref{text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 45%,transparent);font-weight:600;white-space:nowrap}
+a.ref:hover{border-bottom-color:var(--accent)}
+
+/* ---------- domain page ---------- */
+.domain-hero{display:flex;align-items:center;gap:14px}
+.domain-hero .sw{width:18px;height:18px;border-radius:4px;background:var(--c)}
+.domain-body{max-width:72ch;margin-top:20px}
+.domain-body h4{font-family:var(--font-display);font-size:21px;margin:1.6em 0 .3em}
+
+/* ---------- tools ---------- */
+.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.tool-grid{grid-template-columns:1fr}}
+.tool-card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:0}
+.tool-card:hover{border-color:var(--accent)}
+.tool-card b{font-size:17px;line-height:1.35}
+.tool-card span{font-size:14px;color:var(--muted)}
+.when{font-size:16px;background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin-top:18px;max-width:72ch}
+
+/* ---------- glossary ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.filters input[type=search]{font:inherit;font-size:16px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:280px;max-width:100%}
+.fbtn{font:inherit;font-size:14px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fgroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.fgroup > span{font-size:13px;color:var(--muted);margin-inline-end:4px}
+.letters{display:flex;flex-wrap:wrap;gap:4px;margin-top:16px}
+.letters button{font:inherit;font-family:var(--font-display);font-weight:700;font-size:16px;width:32px;height:32px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.letters button:disabled{opacity:.35;cursor:default}
+.gl-letter{font-family:var(--font-display);font-size:30px;font-weight:900;margin:28px 0 6px;color:var(--muted);scroll-margin-top:90px}
+.gl{padding:14px 0;border-top:1px solid var(--line);max-width:76ch;scroll-margin-top:90px}
+.gl h3{font-size:21px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.gl h3 .en{font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--muted);direction:ltr;unicode-bidi:isolate}
+.gl .prose{font-size:16px}
+.gl .prose p{margin:.3em 0}
+.gl .meta{display:flex;gap:6px 10px;flex-wrap:wrap;font-size:13px;align-items:center;color:var(--muted)}
+
+/* ---------- outlines tabs ---------- */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;border-bottom:1px solid var(--line)}
+.tabs button{font:inherit;font-weight:700;font-size:16px;padding:10px 16px;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.note{font-size:15px;background:var(--surface-2);border-radius:8px;padding:10px 14px;margin-top:16px;max-width:72ch}
+
+footer{background:var(--surface)}
+footer .wrap{padding-block:24px;font-size:14px;color:var(--muted);display:grid;gap:8px}
+footer p{margin:0;max-width:90ch}
+.empty-state{padding:30px;text-align:center;color:var(--muted)}
+button.tag{font:inherit;font-size:12px;font-weight:600;background:none;cursor:pointer;color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+button.tag:hover{background:var(--accent-soft)}
+.reader{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);direction:rtl}
+.reader-bar{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;padding-block:10px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);background:var(--surface);border-bottom:1px solid var(--line)}
+.reader-title{flex:1 1 260px;min-width:0}
+.reader-title b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reader-title span{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reader-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.reader-tools .btn{font-size:14px;padding:6px 11px}
+#zoomVal{font-size:13px;color:var(--muted);min-width:42px;text-align:center;font-variant-numeric:tabular-nums}
+.reader-body{flex:1;overflow:auto;padding-block:18px 48px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);background:var(--surface-2)}
+.reader-status{text-align:center;color:var(--muted);padding:40px 0;font-size:16px}
+.reader-pages{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:min-content}
+.rpage{background:var(--paper);box-shadow:0 1px 4px rgba(0,0,0,.18);position:relative;flex:none}
+.rpage canvas{display:block;width:100%;height:auto}
+.rpage-n{position:absolute;inset:0;display:grid;place-items:center;color:#9aa3ab;font-size:14px}
+/* sources */
+.srcbox{margin-top:22px;max-width:72ch;display:grid;gap:10px}
+.src-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.src-ico{flex:none;width:38px;height:46px;border:1.5px solid var(--line);border-radius:4px 12px 4px 4px;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.03em;background:var(--bg)}
+.src-ico.web{border-radius:50%;width:40px;height:40px}
+.src-main{flex:1;min-width:200px}
+.src-main b{display:block;font-size:16px}
+.src-main span{display:block;font-size:14px;color:var(--muted)}
+.src-btns{display:flex;gap:8px;flex-wrap:wrap}
+.src-btns .btn{font-size:14px;padding:6px 12px}
+.dl-only{display:none!important}
+.can-dl .dl-only{display:inline-flex!important}
+a.tag{text-decoration:none;color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+a.tag:hover{background:var(--accent-soft)}
+.srclist{display:grid;gap:0;margin-top:6px}
+.srclist .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.srclist .row a.t{font-weight:700;color:var(--ink);text-decoration:none}
+.srclist .row a.t:hover{color:var(--accent);text-decoration:underline}
+.srclist .row .c{font-size:13px;color:var(--muted);margin-top:2px}
+.srclist .row .b{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:640px){.srclist .row{grid-template-columns:1fr}.srclist .row .b{justify-content:flex-start}}
+
+@media (min-width:821px){
+  .top-in{flex-wrap:nowrap;gap:14px}
+  .nav{flex-wrap:nowrap;gap:0}
+  .nav a{padding:6px 7px;font-size:14.5px;white-space:nowrap}
+  .search input{width:160px}
+}
+@media (min-width:821px) and (max-width:1180px){ .brand-txt small{display:none} .nav .yr-link span.c{display:none} }
+/* ---------- municipal blue & white identity (inspired by the city emblem & flag) ---------- */
+h1,h2{font-family:var(--font-ui);font-weight:800;letter-spacing:-.01em}
+.top{border-bottom:0;box-shadow:0 1px 0 var(--line)}
+.top::before,footer::before{content:"";display:block;height:12px;background:linear-gradient(var(--accent) 0 3px,transparent 3px 6px,var(--accent) 6px 9px,transparent 9px)}
+.brand{font-family:var(--font-ui)}
+.brand .mark{flex:none}
+.brand-txt{display:flex;flex-direction:column;line-height:1.1}
+.brand-txt b{font-weight:800;font-size:20px;color:var(--ink)}
+.brand-txt small{font-weight:500;font-size:12px;color:var(--muted)}
+.nav a{font-family:var(--font-ui);font-weight:500}
+.nav a[aria-current="page"]{background:var(--accent);color:var(--on-accent)}
+.nav a[aria-current="page"] b{color:var(--on-accent)}
+.nav .nav-outl{color:var(--accent);font-weight:700}
+.home-hero{position:relative;padding-block:8px 4px}
+.home-hero h1{font-family:var(--font-ui);font-weight:900;color:var(--accent);font-size:clamp(38px,5.6vw,60px)}
+.home-hero .eyebrow{color:var(--accent)}
+.stars{display:inline-flex;gap:5px;margin-bottom:10px}
+.stars svg{width:12px;height:12px;fill:var(--gold)}
+.yt-course,.mx-stagehead .course,.big-num{font-family:var(--font-ui);font-weight:900}
+.yt-card{border-radius:14px}
+.yt-card.is-cur{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.yt-card.is-cur .yt-yr,.yt-card.is-cur .yt-meta{color:color-mix(in srgb,var(--on-accent) 80%,transparent)}
+.yt-card.is-cur .bar{background:color-mix(in srgb,var(--on-accent) 25%,transparent)}
+.yt-card.is-cur .bar > i{background:var(--gold)}
+.yt-here{background:var(--gold)!important;color:var(--on-gold)!important}
+.yt-arrow{color:var(--gold);font-weight:700}
+.nextup .eyebrow{color:var(--gold);filter:brightness(.85)}
+.btn.primary{background:var(--accent);border-color:var(--accent)}
+.outl-strip{margin-top:16px;display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.outl-strip b{font-family:var(--font-ui);font-weight:800;font-size:17px;color:var(--accent)}
+.outl-strip span.m{font-size:14px;color:var(--muted);flex:1 1 220px}
+.outl-strip .row{display:flex;gap:6px;flex-wrap:wrap}
+.outl-strip .chip{background:var(--accent-soft);color:var(--accent)}
+.ysw a[aria-current="page"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ysw a[aria-current="page"] b{color:var(--on-accent)}
+.pnum{font-family:var(--font-ui);color:var(--accent);opacity:.75}
+.prow.read .pnum{opacity:1}
+.group-title .dot{border-radius:50%}
+footer{background:var(--accent-soft)}
+</style>
+
+<div id="app">
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#home" aria-label="קיט ההתמחות, דף הבית">
+      <svg class="mark" width="40" height="34" viewBox="0 0 40 34" aria-hidden="true"><path d="M6.05,11.11 L6.82,13.16 L9.00,13.26 L7.29,14.62 L7.88,16.72 L6.05,15.52 L4.23,16.72 L4.82,14.62 L3.11,13.26 L5.29,13.16Z M9.28,6.80 L10.05,8.85 L12.23,8.95 L10.52,10.31 L11.11,12.41 L9.28,11.21 L7.46,12.41 L8.04,10.31 L6.33,8.95 L8.52,8.85Z M14.19,3.92 L14.95,5.96 L17.14,6.06 L15.43,7.42 L16.01,9.52 L14.19,8.32 L12.37,9.52 L12.95,7.42 L11.24,6.06 L13.42,5.96Z M20.00,2.90 L20.77,4.95 L22.95,5.04 L21.24,6.40 L21.82,8.51 L20.00,7.30 L18.18,8.51 L18.76,6.40 L17.05,5.04 L19.23,4.95Z M25.81,3.92 L26.58,5.96 L28.76,6.06 L27.05,7.42 L27.63,9.52 L25.81,8.32 L23.99,9.52 L24.57,7.42 L22.86,6.06 L25.05,5.96Z M30.72,6.80 L31.48,8.85 L33.67,8.95 L31.96,10.31 L32.54,12.41 L30.72,11.21 L28.89,12.41 L29.48,10.31 L27.77,8.95 L29.95,8.85Z M33.95,11.11 L34.71,13.16 L36.89,13.26 L35.18,14.62 L35.77,16.72 L33.95,15.52 L32.12,16.72 L32.71,14.62 L31.00,13.26 L33.18,13.16Z" fill="var(--accent)"/><path d="M18 20h4l1.4 12h-6.8z" fill="var(--ink)"/><rect x="17.3" y="17.2" width="5.4" height="2.4" rx=".6" fill="var(--gold)"/></svg>
+      <span class="brand-txt"><b>קיט ההתמחות</b><small>פסיכולוגיה חינוכית · שפ"ח ת"א-יפו</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="ניווט ראשי">
+      <a href="#s1" data-r="s1" class="yr-link"><b>שנה א'</b> <span class="c">מתאבנים</span></a>
+      <a href="#s2" data-r="s2" class="yr-link"><b>שנים ב'-ג'</b> <span class="c">מנה עיקרית</span></a>
+      <a href="#s3" data-r="s3" class="yr-link"><b>שנה ד'</b> <span class="c">קינוח</span></a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a href="#outlines" data-r="outlines" class="nav-outl">מתווי עבודה</a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a href="#library" data-r="library">ספרייה</a>
+      <a href="#tools" data-r="tools">כלים</a>
+      <a href="#glossary" data-r="glossary">מילון</a>
+      <a href="#sources" data-r="sources">מקורות</a>
+    </nav>
+    <form class="search" id="searchForm" role="search">
+      <label class="sr" for="q">חיפוש</label>
+      <input id="q" type="search" placeholder="חיפוש: מאמר, כלי או מושג" autocomplete="off">
+    </form>
+  </div>
+</header>
+<main class="wrap" id="main" tabindex="-1"></main>
+
+<div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+  <div class="reader-bar">
+    <button type="button" class="btn" id="readerClose">✕ סגירה</button>
+    <div class="reader-title"><b id="readerTitle"></b><span id="readerMeta"></span></div>
+    <div class="reader-tools">
+      <button type="button" class="btn" id="zoomOut" aria-label="הקטנה">−</button><span id="zoomVal" aria-live="polite">100%</span><button type="button" class="btn" id="zoomIn" aria-label="הגדלה">+</button>
+      <button type="button" class="btn dl-only" id="readerDl" data-dl="" data-name="">הורדה</button>
+      <a class="btn" id="readerExt" target="_blank" rel="noopener" hidden>למקור ↗</a>
+    </div>
+  </div>
+  <div class="reader-body" id="readerBody"><div class="reader-status" id="readerStatus" role="status"></div><div class="reader-pages" id="readerPages" dir="ltr"></div></div>
+</div>
+</div>
+
+<script type="application/json" id="kit-data">/*__DATA__*/</script>
+<script>
+(function(){
+"use strict";
+const D = JSON.parse(document.getElementById('kit-data').textContent);
+const IT = Object.fromEntries(D.items.map(i => [i.id, i]));
+const ST = Object.fromEntries(D.stages.map(s => [s.id, s]));
+const DM = Object.fromEntries(D.domains.map(d => [d.id, d]));
+const TL = Object.fromEntries(D.tools.map(t => [t.id, t]));
+const ALL_IDS = D.items.map(i => i.id);
+const $main = document.getElementById('main');
+document.documentElement.lang = 'he';
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dcol = d => `var(--d-${d})`;
+const CHECK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const norm = s => String(s || '').replace(/[֑-ׇ]/g, '').replace(/["'״׳`\-–־]/g, '').replace(/\s+/g, ' ').toLowerCase().trim();
+const stageOf = it => it.placements.length ? it.placements[0][0] : null;
+const domainsOf = it => [...new Set(it.placements.map(p => p[1]))];
+const itemsIn = (stage, domain) => D.items.filter(i => i.placements.some(p => (!stage || p[0] === stage) && (!domain || p[1] === domain)));
+const ORDER = D.items.filter(i => i.placements.length).map(i => i.id);
+
+/* ================= progress store ================= */
+const Store = {
+  KEY: 'kit-progress-v1', rec: {}, mode: 'local', ref: null, timer: null, inflight: false, again: false, subs: [],
+  isRead(id){ return !!(this.rec[id] && this.rec[id].v); },
+  count(ids){ return ids.filter(id => this.isRead(id)).length; },
+  on(fn){ this.subs.push(fn); },
+  emit(){ this.subs.forEach(fn => { try { fn(); } catch(e){} }); },
+  load(){ try { const raw = localStorage.getItem(this.KEY); if (raw){ const o = JSON.parse(raw); if (o && o.rec && typeof o.rec === 'object') this.rec = o.rec; } } catch(e){} },
+  saveLocal(){ try { localStorage.setItem(this.KEY, JSON.stringify({ rec: this.rec })); } catch(e){} },
+  toggle(id){ const v = !this.isRead(id); this.rec[id] = { v, t: Date.now() }; this.saveLocal(); this.schedule(); this.emit(); },
+  merge(other){
+    let changed = false;
+    for (const [id, r] of Object.entries(other || {})){
+      if (!r || typeof r.t !== 'number' || !IT[id]) continue;
+      const mine = this.rec[id];
+      if (!mine || r.t > mine.t){ this.rec[id] = { v: !!r.v, t: r.t }; changed = true; }
+    }
+    return changed;
+  },
+  async connect(){
+    const c = window.claude;
+    if (!c || typeof c.use !== 'function') return;
+    try {
+      const [db, user] = await Promise.all([c.use('db'), c.use('user')]);
+      if (!db || !user) return;
+      const uid = await user.id();
+      if (!uid) return;
+      const ref = db.doc('data/users/' + uid + '/progress');
+      const snap = await ref.get();
+      const remote = snap.exists ? ((snap.data() || {}).rec || {}) : {};
+      if (this.merge(remote)) this.saveLocal();
+      const localNewer = Object.entries(this.rec).some(([id, r]) => !remote[id] || remote[id].t < r.t);
+      this.ref = ref; this.mode = 'db'; this.emit();
+      if (localNewer) this.schedule(0);
+    } catch(e){ this.ref = null; this.mode = 'local'; this.emit(); }
+  },
+  schedule(ms){ if (!this.ref) return; clearTimeout(this.timer); this.timer = setTimeout(() => this.flush(), ms == null ? 900 : ms); },
+  async flush(){
+    if (!this.ref) return;
+    if (this.inflight){ this.again = true; return; }
+    this.inflight = true;
+    try { await this.ref.set({ rec: this.rec }); }
+    catch(e){
+      const code = e && e.code;
+      if (code === 'unavailable'){ setTimeout(() => this.schedule(0), 1500 + Math.random() * 1500); }
+      else { this.ref = null; this.mode = 'local'; this.emit(); }
+    } finally {
+      this.inflight = false;
+      if (this.again){ this.again = false; this.schedule(300); }
+    }
+  }
+};
+Store.load();
+
+function storeNote(){
+  return Store.mode === 'db'
+    ? 'ההתקדמות נשמרת בחשבון שלך ומסונכרנת בין מכשירים. רק את/ה רואה אותה.'
+    : 'ההתקדמות נשמרת בדפדפן הזה בלבד. בדפדפן או במכשיר אחר היא תתחיל מאפס.';
+}
+
+/* ================= shared renderers ================= */
+function readBtn(id, big){
+  const r = Store.isRead(id);
+  if (big) return `<button class="btn ${r ? 'is-read' : 'primary'}" data-toggle="${id}" aria-pressed="${r}">${r ? CHECK.replace('<svg', '<svg width="16" height="16"') + ' קראתי' : 'סימון כנקרא'}</button>`;
+  return `<button class="readbtn" data-toggle="${id}" aria-pressed="${r}" aria-label="${r ? 'בטל סימון כנקרא' : 'סמן כנקרא'}: ${esc(IT[id].title)}" title="${r ? 'נקרא' : 'סמן כנקרא'}">${CHECK}</button>`;
+}
+function domainChip(d){ return `<a class="chip" href="#d-${d}" style="--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d].label)}</a>`; }
+function stageChip(s){ return `<a class="chip" href="#${s}">${esc(ST[s].label)} · ${esc(ST[s].course)}</a>`; }
+function byline(it){ return [it.authors, it.year].filter(Boolean).map(esc).join(' · '); }
+const FDIR = 'files/';
+const ORIG_KIND = { doc: 'Word', docx: 'Word', pptx: 'PowerPoint' };
+const mb = n => n >= 1e6 ? (n / 1e6).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1e3)) + ' KB';
+const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch(e){ return ''; } };
+const fileFor = key => key === 'kit' ? D.kitFile : (IT[key] && IT[key].file);
+const pdfName = f => f.orig.replace(/\.(docx?|pptx)$/i, '.pdf');
+function pdfLink(key, label, cls){ return `<button type="button" class="${cls || 'btn'}" data-read="${key}">${label}</button>`; }
+function dlLink(key, label, cls){ const f = fileFor(key); return `<button type="button" class="${cls || 'btn'} dl-only" data-dl="${FDIR}${f.pdf}" data-name="${esc(pdfName(f))}">${label}</button>`; }
+function srcTags(it){
+  const t = [];
+  if (it.file) t.push(pdfLink(it.id, 'PDF', 'tag'));
+  if (it.url) t.push(`<a class="tag" href="${esc(it.url)}" target="_blank" rel="noopener">קישור ↗</a>`);
+  return t.join('');
+}
+function srcBox(it){
+  const rows = [];
+  const f = it.file;
+  if (f){
+    const kind = ORIG_KIND[f.ext];
+    const notes = [`<bdi>PDF</bdi> · ${f.pages} עמ' · <bdi dir="ltr">${mb(f.bytes)}</bdi>`];
+    rows.push(`<div class="src-row"><span class="src-ico" aria-hidden="true">PDF</span>
+      <div class="src-main"><b>קובץ המקור</b><span>${notes.join(' · ')}</span></div>
+      <div class="src-btns">${pdfLink(it.id, 'פתיחה')}${dlLink(it.id, 'הורדה')}</div></div>`);
+  }
+  if (it.url){
+    rows.push(`<div class="src-row"><span class="src-ico web" aria-hidden="true">↗</span>
+      <div class="src-main"><b>${esc(it.urlLabel || 'קישור למקור')}</b><span dir="ltr" style="text-align:end">${esc(host(it.url))}</span></div>
+      <div class="src-btns"><a class="btn" href="${esc(it.url)}" target="_blank" rel="noopener">למקור ↗</a></div></div>`);
+  }
+  if (!rows.length) return '';
+  return `<section class="srcbox" aria-label="מקורות">${rows.join('')}</section>`;
+}
+
+/* ================= in-page PDF reader ================= */
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+let pdfjsReady = null;
+function loadScript(src){ return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = src; sc.onload = res; sc.onerror = () => rej(new Error('script')); document.head.appendChild(sc); }); }
+function loadPdfJs(){
+  if (!pdfjsReady) pdfjsReady = loadScript(PDFJS + 'pdf.worker.min.js').then(() => loadScript(PDFJS + 'pdf.min.js')).then(() => {
+    const L = window.pdfjsLib; L.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js'; return L;
+  }).catch(e => { pdfjsReady = null; throw e; });
+  return pdfjsReady;
+}
+const RD = { key: null, doc: null, zoom: 1, obs: null, token: 0, back: null, ratio: 1.414 };
+const $r = id => document.getElementById(id);
+function readerBase(){ const b = $r('readerBody'); const w = b.clientWidth - 32; return Math.max(240, Math.min(900, w)); }
+function sizePages(){
+  const w = Math.round(readerBase() * RD.zoom);
+  document.querySelectorAll('#readerPages .rpage').forEach(d => { d.style.width = w + 'px'; });
+  $r('zoomVal').textContent = Math.round(RD.zoom * 100) + '%';
+}
+async function renderPage(div){
+  const doc = RD.doc, tok = RD.token; if (!doc) return;
+  const n = +div.dataset.p, w = div.clientWidth;
+  if (div.dataset.w === String(w)) return;
+  div.dataset.w = String(w);
+  try {
+    const page = await doc.getPage(n);
+    if (tok !== RD.token) return;
+    const v1 = page.getViewport({ scale: 1 });
+    div.style.aspectRatio = v1.width + ' / ' + v1.height;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const vp = page.getViewport({ scale: (w / v1.width) * dpr });
+    const c = document.createElement('canvas');
+    c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+    c.setAttribute('aria-label', 'עמוד ' + n);
+    await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    if (tok !== RD.token) return;
+    div.replaceChildren(c);
+  } catch(e){ div.dataset.w = ''; }
+}
+async function openReader(key, trigger){
+  const f = fileFor(key); if (!f) return;
+  const tok = ++RD.token;
+  RD.key = key; RD.back = trigger || null; RD.zoom = 1;
+  const title = key === 'kit' ? 'קיט ההתמחות המקורי' : IT[key].title;
+  $r('readerTitle').textContent = title;
+  $r('readerMeta').innerHTML = `<bdi>${esc(f.orig)}</bdi> · ${f.pages} עמ'`;
+  const dl = $r('readerDl'); dl.dataset.dl = FDIR + f.pdf; dl.dataset.name = pdfName(f);
+  const ext = $r('readerExt'), url = key !== 'kit' && IT[key].url;
+  ext.hidden = !url; if (url) ext.href = url;
+  $r('readerPages').replaceChildren();
+  const st = $r('readerStatus'); st.hidden = false; st.textContent = 'טוען את הקובץ…';
+  $r('reader').hidden = false; document.body.style.overflow = 'hidden';
+  $r('readerBody').scrollTop = 0; $r('readerClose').focus();
+  $r('zoomVal').textContent = '100%';
+  try {
+    const [L, buf] = await Promise.all([loadPdfJs(), fetch(FDIR + f.pdf).then(r => { if (!r.ok) throw new Error('fetch'); return r.arrayBuffer(); })]);
+    if (tok !== RD.token) return;
+    const doc = await L.getDocument({ data: buf, isEvalSupported: false }).promise;
+    if (tok !== RD.token){ doc.destroy(); return; }
+    RD.doc = doc;
+    const p1 = await doc.getPage(1); const v = p1.getViewport({ scale: 1 }); RD.ratio = v.height / v.width;
+    const frag = document.createDocumentFragment();
+    for (let i = 1; i <= doc.numPages; i++){
+      const d = document.createElement('div'); d.className = 'rpage'; d.dataset.p = i;
+      d.style.aspectRatio = v.width + ' / ' + v.height;
+      d.innerHTML = `<span class="rpage-n">${i}</span>`;
+      frag.appendChild(d);
+    }
+    $r('readerPages').replaceChildren(frag);
+    st.hidden = true;
+    sizePages();
+    if (RD.obs) RD.obs.disconnect();
+    RD.obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) renderPage(e.target); }), { root: $r('readerBody'), rootMargin: '800px 0px' });
+    document.querySelectorAll('#readerPages .rpage').forEach(d => RD.obs.observe(d));
+  } catch(e){
+    if (tok !== RD.token) return;
+    st.textContent = 'לא הצלחנו להציג את הקובץ כאן.' + (DL ? ' אפשר להוריד אותו בכפתור "הורדה".' : ' כדאי לנסות שוב מאוחר יותר.');
+  }
+}
+function closeReader(){
+  RD.token++;
+  if (RD.obs){ RD.obs.disconnect(); RD.obs = null; }
+  if (RD.doc){ try { RD.doc.destroy(); } catch(e){} RD.doc = null; }
+  $r('readerPages').replaceChildren();
+  $r('reader').hidden = true; document.body.style.overflow = '';
+  if (RD.back && document.contains(RD.back)) RD.back.focus();
+}
+function zoomBy(step){
+  const z = Math.min(2.5, Math.max(0.5, Math.round((RD.zoom + step) * 100) / 100));
+  if (z === RD.zoom || !RD.doc) return;
+  RD.zoom = z; sizePages();
+  document.querySelectorAll('#readerPages .rpage').forEach(d => { d.dataset.w = ''; if (RD.obs){ RD.obs.unobserve(d); RD.obs.observe(d); } });
+}
+let rsT = null;
+window.addEventListener('resize', () => { if ($r('reader').hidden || !RD.doc) return; clearTimeout(rsT); rsT = setTimeout(() => zoomBy(0.0001), 250); });
+
+function itemCard(it){
+  const tags = [];
+  domainsOf(it).forEach(d => tags.push(domainChip(d)));
+  tags.push(srcTags(it));
+  return `<article class="card${Store.isRead(it.id) ? ' read' : ''}">
+    <div class="card-main">
+      <h3><a href="#i-${it.id}">${esc(it.title)}</a></h3>
+      <div class="by">${byline(it)}</div>
+      ${it.tldr ? `<p>${esc(it.tldr)}</p>` : ''}
+      <div class="tags">${tags.join('')}</div>
+    </div>
+    ${readBtn(it.id)}
+  </article>`;
+}
+function bar(n, total){ const p = total ? Math.round(100 * n / total) : 0; return `<div class="bar" role="img" aria-label="${n} מתוך ${total}"><i style="width:${p}%"></i></div>`; }
+function nextUnread(){
+  for (const id of ORDER) if (!Store.isRead(id)) return IT[id];
+  return null;
+}
+
+/* ================= pages ================= */
+const YEAR_INTRO = {
+  s1: 'השנה הראשונה היא שנת היכרות: מה זה להיות פסיכולוג חינוכי, איך נכנסים לבית ספר ולעבודה עם המנהל, ואיך נראים האבחון, הטיפול וההתערבות בחירום בפעם הראשונה. את מתווה העבודה של המסגרת שלך כדאי להכיר כבר בהתחלה; המתווים נמצאים בעמוד נפרד, מחוץ לשנים.',
+  s2: 'בשנים ב\'-ג\' הקריאה מעמיקה. בטיפול: עבודה עם הורים, המשגה דינמית והחוזה הטיפולי. ובעיקר בעבודה המערכתית: בית הספר כארגון, החוזה עם המנהל, הלא מודע הארגוני וההכלה. כאן נכנסים גם החינוך המיוחד והקהילה.',
+  s3: 'שנה ד\' סוגרת מעגל: תיאוריה מעמיקה (ביון, ההגנות הארגוניות, ההכלה), חשיבה על ליבת המקצוע, והכנה לבחינת הסיום בתחום המערכתי.'
+};
+const YKEY = 'kit-my-year';
+function myYear(){ try { const y = localStorage.getItem(YKEY); if (ST[y]) return y; } catch(e){} return null; }
+function setMyYear(y){ try { if (y) localStorage.setItem(YKEY, y); else localStorage.removeItem(YKEY); } catch(e){} }
+const yearIds = sid => itemsIn(sid).map(i => i.id);
+function yearPath(sid){ // ordered list of items in this year (domain order)
+  const out = [];
+  D.domains.forEach(d => D.items.forEach(i => { if (i.placements.some(p => p[0] === sid && p[1] === d.id) && !out.includes(i)) out.push(i); }));
+  return out;
+}
+function currentYear(){
+  const m = myYear(); if (m) return m;
+  for (const s of D.stages){ const ids = yearIds(s.id); if (Store.count(ids) < ids.length) return s.id; }
+  return 's3';
+}
+function nextInYear(sid){ return yearPath(sid).find(i => !Store.isRead(i.id)) || null; }
+function stageOfItem(it){ return it.placements.length ? it.placements[0][0] : null; }
+
+function pageHome(){
+  const cur = currentYear(), mine = myYear();
+  const total = ALL_IDS.length, done = Store.count(ALL_IDS);
+  const nxt = nextInYear(cur);
+  const track = D.stages.map((s, k) => {
+    const ids = yearIds(s.id), n = Store.count(ids);
+    const state = n === ids.length ? 'הושלמה' : n ? 'בתהליך' : 'טרם התחלת';
+    return `${k ? '<span class="yt-arrow" aria-hidden="true">←</span>' : ''}<a class="yt-card${s.id === cur ? ' is-cur' : ''}" href="#${s.id}">
+      <span class="yt-yr">${esc(s.label)}</span><span class="yt-course">${esc(s.course)}</span>
+      <span class="yt-meta">${ids.length} פריטים · ${n} נקראו · ${state}</span>${bar(n, ids.length)}
+      ${s.id === cur ? '<span class="yt-here">אתה/את כאן</span>' : ''}</a>`;
+  }).join('');
+  return `
+  <section class="home-hero">
+    <div class="stars" aria-hidden="true">${'<svg viewBox="0 0 10 10"><path d="M5 0l1.2 3.4H10L7 5.6l1.1 3.6L5 7.1 1.9 9.2 3 5.6 0 3.4h3.8z"/></svg>'.repeat(7)}</div>
+    <div class="eyebrow">פסיכולוגיה חינוכית · שפ"ח תל אביב-יפו</div>
+    <h1>קיט ההתמחות</h1>
+    <p class="lede">רשימת קריאה שבנויה לפי שנות ההתמחות. מתחילים במאמרי שנה א' וממשיכים קדימה, שנה אחרי שנה. לכל מאמר יש סיכום, קובץ מקור או קישור, וכלים לעבודה בשטח.</p>
+    <div class="myyear"><label for="myYearSel">אני בשנה:</label>
+      <select id="myYearSel"><option value="">לפי ההתקדמות שלי</option>${D.stages.map(s => `<option value="${s.id}"${mine === s.id ? ' selected' : ''}>${esc(s.label)} · ${esc(s.course)}</option>`).join('')}</select></div>
+  </section>
+  <nav class="year-track" aria-label="שנות ההתמחות">${track}</nav>
+  <div class="outl-strip"><b>מתווי עבודה</b><span class="m">לא שייכים לשנה מסוימת: מה נכלל בעבודה בכל מסגרת. כדאי להכיר את המתווה של המסגרת שלך כבר בהתחלה.</span>
+    <div class="row">${D.outlines.map(o => `<a class="chip" href="#i-${o.item}">${esc(o.label)}</a>`).join('')}<a class="chip" href="#outlines">לכל המתווים</a></div></div>
+
+  <section class="home-grid">
+    <div class="panel nextup">
+      <div class="eyebrow">הבא בתור · ${esc(ST[cur].label)}</div>
+      ${nxt ? `<h2><a href="#i-${nxt.id}">${esc(nxt.title)}</a></h2><div class="by">${byline(nxt)}</div>
+        ${nxt.tldr ? `<p>${esc(nxt.tldr)}</p>` : ''}
+        <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true)}</div>`
+      : `<h2>סיימת את ${esc(ST[cur].label)}</h2><p>כל הפריטים בשנה הזו סומנו כנקראו.</p><div class="actions">${cur !== 's3' ? `<a class="btn primary" href="#${D.stages[D.stages.findIndex(s => s.id === cur) + 1].id}">לשנה הבאה</a>` : `<a class="btn primary" href="#exam">להכנה לבחינה</a>`}</div>`}
+      <div class="actions" style="margin-top:6px"><a href="#${cur}">לכל רשימת הקריאה של ${esc(ST[cur].label)} ←</a></div>
+    </div>
+    <aside class="panel progress-panel" aria-label="ההתקדמות שלי">
+      <h2>ההתקדמות שלי</h2>
+      <div><span class="big-num">${done}</span> <span class="muted">מתוך ${total} פריטים בקיט</span></div>
+      <div style="margin-top:10px">${bar(done, total)}</div>
+      <div class="store-note" id="storeNote">${storeNote()}</div>
+    </aside>
+  </section>
+
+  <section class="sec orient-sec" id="orient" style="max-width:none"><div class="section-head"><h2>מתחילים כאן</h2><span class="muted">מה לקרוא בחודש הראשון</span></div>
+    <div class="panel"><div class="orient prose">${D.domainText.orientation || ''}</div></div></section>
+
+  <div class="section-head"><h2>לצד המסלול</h2></div>
+  <div class="quick">
+    <a href="#tools"><b>ארגז כלים</b><span>${D.tools.length} צ'קליסטים ורצפי עבודה, מסודרים לפי השנים</span></a>
+    <a href="#glossary"><b>מילון מושגים</b><span>${D.glossary.length} מושגים, עם הפניה למקורות</span></a>
+    <a href="#domains"><b>תחומי העבודה</b><span>סקירה לכל אחד משבעת התחומים</span></a>
+    <a href="#map"><b>מבט על</b><span>כל השנים מול תחומי העבודה בטבלה אחת</span></a>
+    <a href="#sources"><b>מקורות</b><span>קבצי המקור וקישורים לכל הפריטים</span></a>
+    <a href="#library"><b>ספרייה</b><span>כל הפריטים, עם סינון וחיפוש</span></a>
+  </div>`;
+}
+
+function pageMap(){
+  return `<div class="pagehead"><h1>מבט על</h1><p class="lede">כל שלוש שנות ההתמחות מול שבעת תחומי העבודה. העמודות הן השנים, לפי הסדר שבו קוראים.</p></div>
+  <div style="margin-top:22px">${matrix()}</div>
+  <div class="legend"><span><i class="st"></i> טרם נקרא</span><span><i class="st on"></i> נקרא</span></div>
+  <p class="muted" style="margin-top:18px">לסקירה לפי תחום: ${D.domains.map(d => `<a href="#d-${d.id}">${esc(d.long)}</a>`).join(' · ')}</p>`;
+}
+
+function matrix(){
+  const open = new Set(D.openCells.map(c => c.join('|')));
+  let h = `<div class="mx-wrap"><div class="matrix" aria-label="שנים ותחומים">`;
+  h += `<div class="mx-corner">תחום \\ שלב</div>`;
+  D.stages.forEach(s => { const ids = itemsIn(s.id).map(i => i.id); const n = Store.count(ids);
+    h += `<div class="mx-stagehead"><a href="#${s.id}"><span class="course">${esc(s.course)}</span><span class="yr">${esc(s.label)} · ${n}/${ids.length}</span></a>${bar(n, ids.length)}</div>`; });
+  D.domains.forEach(d => {
+    const dids = itemsIn(null, d.id).map(i => i.id);
+    h += `<div class="mx-rowhead"><a href="#d-${d.id}" style="--c:${dcol(d.id)}"><span class="dot"></span>${esc(d.label)}</a><small>${Store.count(dids)}/${dids.length} נקראו</small></div>`;
+    D.stages.forEach(s => {
+      const list = D.items.filter(i => i.placements.some(p => p[0] === s.id && p[1] === d.id));
+      let inner;
+      if (list.length){
+        inner = '<ul>' + list.map(i => `<li class="${Store.isRead(i.id) ? 'read' : ''}${i.inFolder ? '' : ' linkonly'}"><span class="st" aria-hidden="true"></span><a href="#i-${i.id}" title="${esc(i.title)}">${esc(i.title)}</a>${i.inFolder ? '' : '<span class="lk" aria-label="קישור בלבד">↗</span>'}</li>`).join('') + '</ul>';
+      } else if (open.has(s.id + '|' + d.id)){
+        inner = '<span class="mx-empty">—</span>';
+      } else inner = '<span class="mx-empty">—</span>';
+      h += `<div class="mx-cell" data-stage="${esc(s.label + ' · ' + s.course)}">${inner}</div>`;
+    });
+  });
+  h += `<div class="mx-rowhead mx-res"><a href="#tools"><span class="dot" style="background:var(--muted)"></span>משאבים</a><small>כלים מומלצים</small></div>`;
+  D.stages.forEach(s => {
+    const rs = D.resources.filter(r => r.stage === s.id);
+    h += `<div class="mx-cell mx-res" data-stage="${esc(s.label + ' · משאבים')}"><ul>${rs.map(r => `<li>${r.item ? `<a href="#i-${r.item}">${esc(r.title)}</a>` : esc(r.title)} <span class="muted">· ${esc(r.note)}</span></li>`).join('') || '<li class="mx-empty">—</li>'}</ul></div>`;
+  });
+  return h + '</div></div>';
+}
+
+function pathRow(it, n){
+  const r = Store.isRead(it.id);
+  return `<li class="prow${r ? ' read' : ''}${it.inFolder ? '' : ' linkonly'}"><span class="pnum">${n}</span>${readBtn(it.id)}
+    <div class="pmain"><a class="ptitle" href="#i-${it.id}">${esc(it.title)}</a><div class="by">${byline(it)}</div>${it.tldr ? `<p>${esc(it.tldr)}</p>` : ''}<div class="tags">${srcTags(it)}</div></div></li>`;
+}
+function yearSwitch(sid){
+  return `<nav class="ysw" aria-label="מעבר בין שנים">${D.stages.map(s => `<a href="#${s.id}"${s.id === sid ? ' aria-current="page"' : ''}><b>${esc(s.label)}</b> ${esc(s.course)}</a>`).join('<span aria-hidden="true">←</span>')}</nav>`;
+}
+function pageStage(sid){
+  const s = ST[sid], k = D.stages.findIndex(x => x.id === sid);
+  const ids = yearIds(sid), done = Store.count(ids);
+  const nxt = nextInYear(sid);
+  let n = 0, groups = '';
+  D.domains.forEach(d => {
+    const list = D.items.filter(i => i.placements.some(p => p[0] === sid && p[1] === d.id));
+    const isOpen = D.openCells.some(c => c[0] === sid && c[1] === d.id);
+    if (!list.length) return;
+    groups += `<section class="pgroup"><h2 class="group-title" style="--c:${dcol(d.id)}"><span class="dot"></span>${esc(d.long)} <a class="muted glink" href="#d-${d.id}">סקירת התחום</a></h2>`;
+    groups += list.length ? `<ol class="path">${list.map(i => pathRow(i, ++n)).join('')}</ol>` : '';
+    groups += '</section>';
+  });
+  const yset = new Set(ids);
+  const tools = D.tools.filter(t => t.sources.some(x => yset.has(x)));
+  const terms = D.glossary.filter(g => g.sources.some(x => yset.has(x)));
+  const res = D.resources.filter(r => r.stage === sid);
+  const exam = sid === 's3' ? `<section class="panel before"><div class="eyebrow">סוף ההתמחות</div><h2>הבחינה בתחום המערכתי</h2><p>מה מצופה לדעת בסוף ההתמחות, ותרשים זרימה להצגת מקרה מערכתי, .</p><div class="actions"><a class="btn primary" href="#exam">להכנה לבחינה</a></div></section>` : '';
+  const prevS = D.stages[k - 1], nextS = D.stages[k + 1];
+  return `${yearSwitch(sid)}
+  <div class="year-head">
+    <div class="pagehead"><div class="eyebrow">${esc(s.label)}</div><h1>${esc(s.course)}</h1><p class="lede">${esc(YEAR_INTRO[sid] || s.blurb)}</p></div>
+    <aside class="panel">
+      <div class="prog-row"><span><b>${done}</b> מתוך ${ids.length} נקראו</span><span>${ids.length ? Math.round(100 * done / ids.length) : 0}%</span>${bar(done, ids.length)}</div>
+      ${nxt ? `<div class="next-up"><span class="muted">הבא בתור:</span><br><a href="#i-${nxt.id}">${esc(nxt.title)}</a></div>` : `<div class="next-up"><b>סיימת את השנה הזו.</b>${nextS ? ` <a href="#${nextS.id}">ל${esc(nextS.label)} ←</a>` : ''}</div>`}
+    </aside>
+  </div>
+  <div class="section-head"><h2>רשימת הקריאה</h2><span class="muted">${ids.length} פריטים, לפי תחומי העבודה</span></div>
+  ${groups}
+  ${res.length ? `<div class="section-head"><h2>משאבים לשנה הזו</h2></div><ul class="prose">${res.map(r => `<li>${r.item ? `<a href="#i-${r.item}">${esc(r.title)}</a>` : esc(r.title)} <span class="muted">· ${esc(r.note)}</span></li>`).join('')}</ul>` : ''}
+  ${tools.length ? `<div class="section-head"><h2>כלים לשנה הזו</h2><span class="muted">כלים שנשענים על הקריאה של השנה</span></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
+  ${terms.length ? `<div class="section-head"><h2>מושגים של השנה</h2><a href="#glossary">למילון המלא</a></div><div class="related" style="margin-top:0;max-width:none"><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
+  ${exam}
+  <nav class="pager" style="max-width:none" aria-label="שנים סמוכות">${prevS ? `<a href="#${prevS.id}"><small>השנה הקודמת</small>${esc(prevS.label)} · ${esc(prevS.course)}</a>` : '<span></span>'}${nextS ? `<a href="#${nextS.id}" style="text-align:end"><small>השנה הבאה</small>${esc(nextS.label)} · ${esc(nextS.course)}</a>` : ''}</nav>`;
+}
+
+function pageDomains(){
+  return `<div class="pagehead"><h1>תחומים</h1><p class="lede">שבעת תחומי העבודה. בכל תחום: סקירה שמחברת בין המקורות, הקריאה לפי שלבים, כלים ומושגים.</p></div>
+  <div class="tool-grid" style="margin-top:24px">${D.domains.map(d => { const ids = itemsIn(null, d.id).map(i => i.id);
+    return `<a class="tool-card" href="#d-${d.id}" style="--c:${dcol(d.id)}"><b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b><span>${ids.length} פריטים · ${D.tools.filter(t => t.domain === d.id).length} כלים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; }).join('')}</div>`;
+}
+
+function pageDomain(did){
+  const d = DM[did];
+  const ids = itemsIn(null, did).map(i => i.id);
+  let byStage = '';
+  D.stages.forEach(s => {
+    const list = D.items.filter(i => i.placements.some(p => p[0] === s.id && p[1] === did));
+    const isOpen = D.openCells.some(c => c[0] === s.id && c[1] === did);
+    byStage += `<div class="group-title">${esc(s.label)} · ${esc(s.course)}</div>`;
+    byStage += list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : `<p class="muted">—</p>`;
+  });
+  const tools = D.tools.filter(t => t.domain === did);
+  const terms = D.glossary.filter(g => g.domains.includes(did));
+  return `<div class="pagehead"><div class="crumbs"><a class="chip" href="#domains">תחומים</a></div>
+    <div class="domain-hero" style="--c:${dcol(did)}"><span class="sw"></span><div><div class="eyebrow">תחום · ${esc(d.label)}</div><h1>${esc(d.long)}</h1></div></div>
+    <div style="margin-top:14px;max-width:420px"><div class="prog-row"><span>נקראו</span><span>${Store.count(ids)}/${ids.length}</span>${bar(Store.count(ids), ids.length)}</div></div></div>
+    <div class="domain-body prose">${D.domainText[did] || ''}</div>
+    <div class="section-head"><h2>הקריאה לפי שלבים</h2></div>${byStage}
+    ${tools.length ? `<div class="section-head"><h2>כלים בתחום</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
+    ${terms.length ? `<div class="section-head"><h2>מושגים בתחום</h2><a href="#glossary">למילון המלא</a></div><div class="related"><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}`;
+}
+
+const SEC_ORDER = [
+  ['ideas', 'רעיונות מרכזיים'], ['models', 'מודלים, שלבים וטבלאות'], ['practice', 'יישום למתמחה'],
+  ['questions', 'שאלות להדרכה'], ['concepts', 'מושגי מפתח'], ['quotes', 'ציטוטים מהמקור'], ['toc', 'תוכן העניינים של המקור']
+];
+function pageItem(id){
+  const it = IT[id];
+  if (!it) return notFound();
+  const crumbs = it.placements.length
+    ? domainsOf(it).map(domainChip).join('')
+    : `<a class="chip" href="#outlines">מתווי עבודה</a>`;
+  const srcBtn = it.file ? pdfLink(it.id, 'פתיחת קובץ המקור') : it.url ? `<a class="btn" href="${esc(it.url)}" target="_blank" rel="noopener">למקור ↗</a>` : '';
+  let body = '', toc = '';
+  body += srcBox(it);
+  if (it.inFolder){
+    body += `<div class="abstract prose">${it.secs.abstract || ''}</div>`;
+    let n = 0;
+    SEC_ORDER.forEach(([k, label]) => {
+      const h = it.secs[k]; if (!h || !h.trim()) return;
+      n++;
+      body += `<section class="sec sec-${k}" id="sec-${k}"><h2>${esc(label)}</h2><div class="prose">${h}</div></section>`;
+      toc += `<button data-jump="sec-${k}">${esc(label)}</button>`;
+    });
+  } else {
+    body += `<div class="linkonly-box"><p>${esc(it.desc || '')}</p></div>`;
+  }
+  const tools = D.tools.filter(t => t.sources.includes(id));
+  const terms = D.glossary.filter(g => g.sources.includes(id));
+  const ysid = stageOfItem(it);
+  const ypath = ysid ? yearPath(ysid) : D.outlines.map(o => IT[o.item]);
+  const idx = ypath.indexOf(it);
+  const prev = idx > 0 ? ypath[idx - 1] : null, next = idx >= 0 && idx < ypath.length - 1 ? ypath[idx + 1] : null;
+  const yl = ysid ? ST[ysid].label : 'המתווים';
+  const posNote = idx >= 0 ? `<div class="ypos"><a href="#${ysid || 'outlines'}">${esc(yl)}${ysid ? ' · ' + esc(ST[ysid].course) : ''}</a> · פריט ${idx + 1} מתוך ${ypath.length}</div>` : '';
+  const level = it.inFolder && it.level ? `<div class="muted" style="font-size:14px;margin-top:6px">${esc(it.stype.split('(')[0].trim())}</div>` : '';
+  return `<div class="item-layout"><div>
+    <div class="crumbs">${crumbs}</div>
+    ${posNote}
+    <div class="item-head"><h1>${esc(it.title)}</h1><div class="by">${byline(it)}</div>${level}</div>
+    <div class="actions">${readBtn(id, true)}${srcBtn.replace('class="btn"', 'class="btn"')}</div>
+    ${body}
+    ${(tools.length || terms.length) ? `<div class="related">
+      ${tools.length ? `<h2>כלים שנשענים על הפריט</h2><div class="row" style="margin-bottom:18px">${tools.map(t => `<a class="chip" href="#t-${t.id}">${esc(t.title)}</a>`).join('')}</div>` : ''}
+      ${terms.length ? `<h2>מושגים מהפריט</h2><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div>` : ''}
+    </div>` : ''}
+    <div class="cite"><p><b>מראה מקום:</b> ${esc(it.cite)}</p><button class="btn" data-copy="${esc(it.cite)}" style="font-size:13px;padding:5px 10px">העתקה</button></div>
+    <nav class="pager" aria-label="פריטים סמוכים">${prev ? `<a href="#i-${prev.id}"><small>הקודם ב${esc(yl)}</small>${esc(prev.title)}</a>` : '<span></span>'}${next ? `<a href="#i-${next.id}" style="text-align:end"><small>הבא ב${esc(yl)}</small>${esc(next.title)}</a>` : ''}</nav>
+  </div>
+  ${toc ? `<aside class="item-toc" aria-label="בדף הזה"><b>בדף הזה</b>${toc}</aside>` : '<span></span>'}
+  </div>`;
+}
+
+/* library */
+const LIB = { q: '', stage: '', domain: '', status: '', avail: '' };
+function pageLibrary(){
+  const fb = (key, val, label, extra) => `<button class="fbtn" data-f="${key}" data-v="${val}" aria-pressed="${LIB[key] === val}">${extra || ''}${esc(label)}</button>`;
+  return `<div class="pagehead"><h1>ספרייה</h1><p class="lede">כל ${D.items.length} הפריטים, עם סינון לפי שלב, תחום וסטטוס קריאה.</p></div>
+  <div class="filters"><label class="sr" for="libq">חיפוש בספרייה</label><input type="search" id="libq" placeholder="סינון לפי כותרת, מחבר או נושא" value="${esc(LIB.q)}"></div>
+  <div class="filters"><div class="fgroup"><span>שלב</span>${fb('stage', '', 'הכל')}${D.stages.map(s => fb('stage', s.id, s.label)).join('')}${fb('stage', 'outline', 'מתווים')}</div></div>
+  <div class="filters"><div class="fgroup"><span>תחום</span>${fb('domain', '', 'הכל')}${D.domains.map(d => fb('domain', d.id, d.label, `<span class="dot" style="--c:${dcol(d.id)}"></span>`)).join('')}</div></div>
+  <div class="filters"><div class="fgroup"><span>סטטוס</span>${fb('status', '', 'הכל')}${fb('status', 'unread', 'טרם נקראו')}${fb('status', 'read', 'נקראו')}</div>
+    <div class="fgroup"><span>מקור</span>${fb('avail', '', 'הכל')}${fb('avail', 'folder', 'קובץ PDF')}${fb('avail', 'url', 'קישור חיצוני')}</div></div>
+  <div id="libResults"></div>`;
+}
+function renderLib(){
+  const el = document.getElementById('libResults'); if (!el) return;
+  const q = norm(LIB.q);
+  const list = D.items.filter(i => {
+    if (LIB.stage === 'outline' && i.placements.length) return false;
+    if (LIB.stage && LIB.stage !== 'outline' && !i.placements.some(p => p[0] === LIB.stage)) return false;
+    if (LIB.domain && !i.placements.some(p => p[1] === LIB.domain)) return false;
+    if (LIB.status === 'read' && !Store.isRead(i.id)) return false;
+    if (LIB.status === 'unread' && Store.isRead(i.id)) return false;
+    if (LIB.avail === 'folder' && !i.file) return false;
+    if (LIB.avail === 'url' && !i.url) return false;
+    if (LIB.avail === 'none' && (i.file || i.url)) return false;
+    if (q && !norm(i.title + ' ' + i.authors + ' ' + i.year + ' ' + i.search).includes(q)) return false;
+    return true;
+  });
+  el.innerHTML = `<p class="muted" style="margin:18px 0 10px">${list.length} פריטים</p>` + (list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : '<div class="empty-state">אין פריטים שמתאימים לסינון. אפשר לנקות חלק מהמסננים.</div>');
+}
+
+/* tools */
+function toolCard(t){ return `<a class="tool-card" href="#t-${t.id}"><b>${esc(t.title)}</b><span>${esc(t.when)}</span><span style="display:flex;gap:6px;align-items:center;--c:${dcol(t.domain)}"><span class="dot"></span>${esc(DM[t.domain].label)}</span></a>`; }
+function pageTools(){
+  let h = `<div class="pagehead"><h1>ארגז כלים</h1><p class="lede">צ'קליסטים, רצפי עבודה ומודלים לעבודה בשטח, מסודרים בערך לפי סדר השנים. כל כלי מפנה למקורות שלו.</p></div>`;
+  D.domains.forEach(d => { const ts = D.tools.filter(t => t.domain === d.id); if (!ts.length) return;
+    h += `<div class="group-title" style="--c:${dcol(d.id)}"><span class="dot"></span>${esc(d.long)}</div><div class="tool-grid">${ts.map(toolCard).join('')}</div>`; });
+  return h;
+}
+function pageTool(tid){
+  const t = TL[tid]; if (!t) return notFound();
+  return `<div class="pagehead"><div class="crumbs"><a class="chip" href="#tools">ארגז כלים</a>${domainChip(t.domain)}</div><h1>${esc(t.title)}</h1></div>
+    <div class="when"><b>מתי להשתמש:</b> ${esc(t.when)}</div>
+    <div class="sec prose">${t.html}</div>
+    <div class="related"><h2>מקורות</h2><div class="row">${t.sources.map(s => `<a class="chip" href="#i-${s}">${esc(IT[s].title)}</a>`).join('')}</div></div>`;
+}
+
+/* glossary */
+const GL = { q: '', domain: '' };
+const LETTERS = 'אבגדהוזחטיכלמנסעפצקרשת'.split('');
+const finalMap = { 'ך':'כ','ם':'מ','ן':'נ','ף':'פ','ץ':'צ' };
+const firstLetter = s => { const c = (s.replace(/^[^א-ת]+/, '')[0]) || '#'; return finalMap[c] || c; };
+function pageGlossary(){
+  return `<div class="pagehead"><h1>מילון מושגים</h1><p class="lede">${D.glossary.length} מושגים, כל אחד עם הפניה למקורות שבהם הוא מופיע.</p></div>
+  <div class="filters"><label class="sr" for="glq">חיפוש מושג</label><input type="search" id="glq" placeholder="חיפוש מושג, בעברית או באנגלית" value="${esc(GL.q)}">
+  <div class="fgroup"><button class="fbtn" data-g="" aria-pressed="${GL.domain === ''}">כל התחומים</button>${D.domains.map(d => `<button class="fbtn" data-g="${d.id}" aria-pressed="${GL.domain === d.id}"><span class="dot" style="--c:${dcol(d.id)}"></span>${esc(d.label)}</button>`).join('')}</div></div>
+  <div class="letters" id="glLetters"></div><div id="glList"></div>`;
+}
+function renderGlossary(){
+  const el = document.getElementById('glList'); if (!el) return;
+  const q = norm(GL.q);
+  const list = D.glossary.filter(g => (!GL.domain || g.domains.includes(GL.domain)) && (!q || norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q)));
+  const by = {};
+  list.forEach(g => { const L = firstLetter(g.term); (by[L] = by[L] || []).push(g); });
+  document.getElementById('glLetters').innerHTML = LETTERS.map(L => `<button data-letter="${L}" ${by[L] ? '' : 'disabled'}>${L}</button>`).join('');
+  el.innerHTML = list.length ? Object.keys(by).sort((a, b) => LETTERS.indexOf(a) - LETTERS.indexOf(b)).map(L =>
+    `<div class="gl-letter" id="gl-${L}">${L}</div>` + by[L].map(g => `<div class="gl" data-gterm="${esc(g.term)}"><h3>${esc(g.term)}${g.en ? `<span class="en">${esc(g.en)}</span>` : ''}</h3>
+      <div class="prose">${g.html}</div>
+      <div class="meta">${g.domains.map(d => `<span style="display:inline-flex;gap:5px;align-items:center;--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d] ? DM[d].label : d)}</span>`).join('')}${g.sources.length ? ' · מקורות: ' + g.sources.map(s => `<a class="ref" href="#i-${s}">${esc(IT[s].ref)}</a>`).join(', ') : ''}</div></div>`).join('')).join('')
+    : '<div class="empty-state">לא נמצא מושג. אפשר לנסות ניסוח אחר או לחפש בחיפוש הכללי.</div>';
+}
+
+/* outlines */
+let OUT_TAB = 'elem';
+function pageOutlines(){
+  const o = D.outlines.find(x => x.id === OUT_TAB) || D.outlines[0];
+  const it = IT[o.item];
+  return `<div class="pagehead"><h1>מתווי עבודה</h1><p class="lede">המתווים עומדים בפני עצמם ואינם חלק מרשימת הקריאה של שנה מסוימת. הם המסמכים שמגדירים מה נכלל בעבודת הפסיכולוג בכל מסגרת. הם הבסיס לשיחה עם המנהל או הגננת על תוכנית העבודה השנתית.</p></div>
+  <div class="tabs" role="tablist">${D.outlines.map(x => `<button role="tab" data-tab="${x.id}" aria-selected="${x.id === o.id}">${esc(x.label)}</button>`).join('')}</div>
+  ${o.note ? `<p class="note">${esc(o.note)}</p>` : ''}
+  <div class="item-head" style="margin-top:22px"><h2 style="font-size:28px">${esc(it.title)}</h2><div class="by">${byline(it)}</div></div>
+  <div class="actions">${readBtn(it.id, true)}<a class="btn" href="#i-${it.id}">לסיכום המלא</a></div>
+  ${srcBox(it)}
+  <div class="abstract prose">${it.secs.abstract}</div>
+  <section class="sec"><h2>מבנה, שלבים ולוחות זמנים</h2><div class="prose">${it.secs.models}</div></section>
+  <section class="sec"><h2>יישום למתמחה</h2><div class="prose">${it.secs.practice}</div></section>`;
+}
+
+/* exam */
+function pageExam(){
+  const r = IT.rubric, flow = TL['systemic-case-flow'];
+  const reads = ['rubric', 'fuchs', 'psa_map', 'englert', 'turi_unconscious', 'nutkevitch2003', 'menzies', 'forest2014'].filter(x => IT[x]);
+  return `<div class="pagehead"><div class="crumbs">${domainChip('system')}${stageChip('s3')}</div><h1>הבחינה בתחום המערכתי</h1>
+    <p class="lede">מה מצופה לדעת בסוף ההתמחות, ואיך לארגן הצגה של מקרה מערכתי.</p></div>
+  <div class="actions">${readBtn('rubric', true)}<a class="btn" href="#i-rubric">לסיכום המלא של המחוון</a></div>
+  ${srcBox(r)}
+  <div class="abstract prose">${r.secs.abstract}</div>
+  <section class="sec"><h2>הציפיות ותרשים הזרימה</h2><div class="prose">${r.secs.models}</div></section>
+  ${flow ? `<section class="sec"><h2>${esc(flow.title)}</h2><div class="when" style="margin-top:0"><b>מתי להשתמש:</b> ${esc(flow.when)}</div><div class="prose">${flow.html}</div></section>` : ''}
+  <section class="sec"><h2>שאלות להכנה</h2><div class="prose">${r.secs.questions}</div></section>
+  <div class="section-head"><h2>קריאה מומלצת לקראת הבחינה</h2></div>
+  <div class="cards">${reads.map(x => itemCard(IT[x])).join('')}</div>`;
+}
+
+/* search */
+let SEARCH_Q = '';
+function pageSearch(){
+  const q = norm(SEARCH_Q);
+  if (!q) return `<div class="pagehead"><h1>חיפוש</h1><p class="lede">אפשר לחפש מאמר, מחבר, כלי או מושג בתיבת החיפוש למעלה.</p></div>`;
+  const items = D.items.map(i => { const t = norm(i.title + ' ' + i.authors); const s = norm(i.search);
+    return [i, t.includes(q) ? 3 : s.includes(q) ? 1 : 0]; }).filter(x => x[1]).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+  const tools = D.tools.filter(t => norm(t.title + ' ' + t.when + ' ' + t.html.replace(/<[^>]+>/g, ' ')).includes(q));
+  const terms = D.glossary.filter(g => norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q));
+  const none = !items.length && !tools.length && !terms.length;
+  return `<div class="pagehead"><h1>תוצאות עבור "${esc(SEARCH_Q)}"</h1><p class="lede">${items.length} פריטים · ${tools.length} כלים · ${terms.length} מושגים</p></div>
+    ${none ? '<div class="empty-state">לא נמצאו תוצאות. אפשר לנסות מילה אחרת או חלק ממילה.</div>' : ''}
+    ${terms.length ? `<div class="section-head"><h2>מושגים</h2></div><div class="related"><div class="row">${terms.slice(0, 30).map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
+    ${tools.length ? `<div class="section-head"><h2>כלים</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
+    ${items.length ? `<div class="section-head"><h2>פריטים</h2></div><div class="cards">${items.map(itemCard).join('')}</div>` : ''}`;
+}
+
+function srcRow(it){
+  const b = [];
+  if (it.file) b.push(pdfLink(it.id, `PDF · ${it.file.pages} עמ'`, 'btn'));
+  if (it.url) b.push(`<a class="btn" href="${esc(it.url)}" target="_blank" rel="noopener" title="${esc(it.urlLabel || '')}">קישור ↗</a>`);
+  return `<div class="row"><div><a class="t" href="#i-${it.id}">${esc(it.title)}</a> <span class="muted" style="font-size:14px">${byline(it)}</span><div class="c">${esc(it.cite)}</div></div><div class="b">${b.join('')}</div></div>`;
+}
+function pageSources(){
+  const nf = D.items.filter(i => i.file).length, nu = D.items.filter(i => i.url).length, nn = D.items.filter(i => !i.file && !i.url).length;
+  const k = D.kitFile;
+  let h = `<div class="pagehead"><h1>מקורות</h1><p class="lede">כל המקורות לפי שנות ההתמחות, עם קובץ PDF לפתיחה וקישור למקור המקורי.</p></div>`;
+  D.stages.forEach(s => {
+    const list = D.items.filter(i => i.placements.length && i.placements[0][0] === s.id);
+    h += `<div class="section-head"><h2>${esc(s.label)} · ${esc(s.course)}</h2></div><div class="srclist">${list.map(srcRow).join('')}</div>`;
+  });
+  const outl = D.items.filter(i => !i.placements.length);
+  h += `<div class="section-head"><h2>מתווי עבודה</h2></div><div class="srclist">${outl.map(srcRow).join('')}</div>`;
+  return h;
+}
+
+function notFound(){ return `<div class="empty-state"><h1 style="font-size:28px">הדף לא נמצא</h1><p><a href="#home">חזרה לדף הבית</a></p></div>`; }
+
+/* ================= router ================= */
+let CUR = '';
+function current(){ return (location.hash || '#home').slice(1) || 'home'; }
+function render(keepScroll){
+  const r = current();
+  const y = window.scrollY;
+  let html, navKey = '';
+  if (r === 'home'){ html = pageHome(); navKey = 'home'; }
+  else if (/^s[123]$/.test(r)){ html = pageStage(r); navKey = r; }
+  else if (r === 'map'){ html = pageMap(); }
+  else if (r === 'domains'){ html = pageDomains(); }
+  else if (r.startsWith('d-') && DM[r.slice(2)]){ html = pageDomain(r.slice(2)); }
+  else if (r.startsWith('i-')){ html = pageItem(r.slice(2)); const itx = IT[r.slice(2)]; navKey = itx && stageOfItem(itx) ? stageOfItem(itx) : 'outlines'; }
+  else if (r === 'library'){ html = pageLibrary(); navKey = 'library'; }
+  else if (r === 'tools'){ html = pageTools(); navKey = 'tools'; }
+  else if (r.startsWith('t-')){ html = pageTool(r.slice(2)); navKey = 'tools'; }
+  else if (r === 'glossary'){ html = pageGlossary(); navKey = 'glossary'; }
+  else if (r === 'outlines'){ html = pageOutlines(); navKey = 'outlines'; }
+  else if (r === 'exam'){ html = pageExam(); navKey = 's3'; }
+  else if (r === 'sources'){ html = pageSources(); navKey = 'sources'; }
+  else if (r === 'search'){ html = pageSearch(); }
+  else html = notFound();
+  $main.innerHTML = html;
+  document.querySelectorAll('#nav a').forEach(a => { if (a.dataset.r === navKey) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  if (r === 'library') renderLib();
+  if (r === 'glossary') renderGlossary();
+  if (keepScroll) window.scrollTo(0, y);
+  else if (r !== CUR) window.scrollTo(0, 0);
+  CUR = r;
+}
+window.addEventListener('hashchange', () => render(false));
+Store.on(() => {
+  // refresh read states in place without jumping
+  const r = current();
+  if (r === 'library'){ renderLib(); const n = document.getElementById('storeNote'); if (n) n.textContent = storeNote(); return; }
+  render(true);
+});
+
+/* ================= events ================= */
+let DL = null;
+document.addEventListener('click', e => {
+  const dl = e.target.closest('[data-dl]');
+  if (dl && !DL && !(window.claude && typeof window.claude.use === 'function')){
+    e.preventDefault();
+    const a = document.createElement('a'); a.href = dl.dataset.dl; a.download = dl.dataset.name || ''; document.body.appendChild(a); a.click(); a.remove();
+    return;
+  }
+  if (dl && DL){
+    e.preventDefault();
+    const label = dl.textContent;
+    dl.textContent = 'מכין…';
+    fetch(dl.dataset.dl).then(r => { if (!r.ok) throw { code: 'fetch' }; return r.blob(); })
+      .then(blob => DL.save({ filename: dl.dataset.name, data: blob }))
+      .catch(err => { const c = err && err.code; if (c && !['declined', 'rate_limited', 'fetch'].includes(c)){ DL = null; document.documentElement.classList.remove('can-dl'); } })
+      .finally(() => { dl.textContent = label; });
+    return;
+  }
+  const rd = e.target.closest('[data-read]');
+  if (rd){ e.preventDefault(); openReader(rd.dataset.read, rd); return; }
+  if (e.target.closest('#readerClose')){ closeReader(); return; }
+  if (e.target.closest('#zoomIn')){ zoomBy(0.25); return; }
+  if (e.target.closest('#zoomOut')){ zoomBy(-0.25); return; }
+  const t = e.target.closest('[data-toggle]');
+  if (t){ e.preventDefault(); Store.toggle(t.dataset.toggle); return; }
+  const j = e.target.closest('[data-jump]');
+  if (j){ const s = document.getElementById(j.dataset.jump); if (s) s.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); return; }
+  const f = e.target.closest('[data-f]');
+  if (f){ LIB[f.dataset.f] = f.dataset.v; document.querySelectorAll(`[data-f="${f.dataset.f}"]`).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === f.dataset.v))); renderLib(); return; }
+  const g = e.target.closest('[data-g]');
+  if (g){ GL.domain = g.dataset.g; document.querySelectorAll('[data-g]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.g === GL.domain))); renderGlossary(); return; }
+  const L = e.target.closest('[data-letter]');
+  if (L){ const s = document.getElementById('gl-' + L.dataset.letter); if (s) s.scrollIntoView({ block: 'start' }); return; }
+  const term = e.target.closest('[data-term]');
+  if (term){ GL.q = term.dataset.term; GL.domain = ''; if (current() === 'glossary') render(false); else location.hash = '#glossary';
+    setTimeout(() => { const el = document.querySelector(`.gl[data-gterm="${CSS.escape(term.dataset.term)}"]`); if (el) el.scrollIntoView({ block: 'start' }); }, 30); return; }
+  const tab = e.target.closest('[data-tab]');
+  if (tab){ OUT_TAB = tab.dataset.tab; render(true); return; }
+  const cp = e.target.closest('[data-copy]');
+  if (cp){ const txt = cp.dataset.copy; const done = () => { cp.textContent = 'הועתק'; setTimeout(() => cp.textContent = 'העתקה', 1500); };
+    try { navigator.clipboard.writeText(txt).then(done, () => selectText(cp)); } catch(err){ selectText(cp); } return; }
+});
+function selectText(btn){ const p = btn.parentElement.querySelector('p'); if (!p) return; const rg = document.createRange(); rg.selectNodeContents(p); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$r('reader').hidden) closeReader(); });
+document.addEventListener('change', e => { if (e.target.id === 'myYearSel'){ setMyYear(e.target.value); render(true); } });
+document.addEventListener('input', e => {
+  if (e.target.id === 'libq'){ LIB.q = e.target.value; renderLib(); }
+  if (e.target.id === 'glq'){ GL.q = e.target.value; renderGlossary(); }
+});
+document.getElementById('searchForm').addEventListener('submit', e => {
+  e.preventDefault();
+  SEARCH_Q = document.getElementById('q').value.trim();
+  if (current() === 'search') render(false); else location.hash = '#search';
+});
+
+render(false);
+Store.connect();
+if (!(window.claude && typeof window.claude.use === 'function')) document.documentElement.classList.add('can-dl');
+(async () => { try { const c = window.claude; if (c && typeof c.use === 'function'){ DL = await c.use('downloads'); if (DL) document.documentElement.classList.add('can-dl'); } } catch(e){ DL = null; } })();
+})();
+</script>
