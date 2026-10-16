@@ -29,7 +29,7 @@ REF = {
  "theorists": "קוהוט, ויניקוט, בולבי", "mor2006": "מור 2006", "nutkevitch2025": "Nutkevitch 2025",
  "menzies": "Menzies Lyth 1960", "armstrong": "Armstrong", "fuchs": "המפה של פוקס",
  "rubric": "המחוון המערכתי", "psa_map": "מפת המושגים הפסיכואנליטית-מערכתית",
- "cohen_parenting": "כהן, טיפול בהורות", "corona2020": "מצפן הקורונה 2020",
+ "cohen_parenting": "כהן, טיפול בהורות", "cohen2018": "כהן 2018, מצגת", "corona2020": "מצפן הקורונה 2020",
  "outline_elem": "ליבת העבודה ביסודי", "outline_sec": "ליבת העבודה בעל-יסודי", "outline_gan": "מודל העבודה בגנים",
 }
 ids = {i["id"] for i in ITEMS}
