@@ -286,5 +286,12 @@
   "pdf": "cohen2018.pdf",
   "pages": 91,
   "bytes": 5610130
+ },
+ "kachergin2012": {
+  "orig": "מה זו בעצם לקות למידה קצרגין.pdf",
+  "ext": "pdf",
+  "pdf": "kachergin2012.pdf",
+  "pages": 16,
+  "bytes": 677203
  }
 }
