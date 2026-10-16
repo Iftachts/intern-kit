@@ -33,6 +33,10 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 #app{direction:rtl}
 a{color:var(--accent)}
 a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+[tabindex="-1"]:focus{outline:none}
+.skiplink{position:absolute;inset-inline-start:12px;top:-60px;z-index:100;background:var(--accent);color:var(--on-accent);padding:8px 14px;border-radius:8px;font-weight:600;text-decoration:none}
+.skiplink:focus{top:8px}
+@media (pointer:coarse){.tag,.chip,.linkbtn,details.mini > summary{min-height:32px}.tag{display:inline-flex;align-items:center}.readbtn{position:relative}.readbtn::before{content:"";position:absolute;inset:-7px}}
 .wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
 h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.2;margin:0}
 .eyebrow{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
@@ -343,7 +347,7 @@ button.tag:hover{background:var(--accent-soft)}
 .reader-pages{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:min-content}
 .rpage{background:var(--paper);box-shadow:0 1px 4px rgba(0,0,0,.18);position:relative;flex:none}
 .rpage canvas{display:block;width:100%;height:auto}
-.rpage-n{position:absolute;inset:0;display:grid;place-items:center;color:#9aa3ab;font-size:14px}
+.rpage-n{position:absolute;inset:0;display:grid;place-items:center;color:#6b7580;font-size:14px}
 /* sources */
 .srcbox{margin-top:22px;max-width:72ch;display:grid;gap:10px}
 .src-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
@@ -418,11 +422,15 @@ footer{background:var(--accent-soft)}
 details.acc{background:var(--surface);border:1px solid var(--line);border-radius:12px;scroll-margin-top:90px}
 details.acc > summary{list-style:none;cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:10px;font-size:17px}
 details.acc > summary::-webkit-details-marker{display:none}
-details.acc > summary::after{content:"";margin-inline-start:auto;width:9px;height:9px;border-inline-end:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg);transition:transform .2s;flex:none}
-details.acc[open] > summary::after{transform:rotate(-135deg)}
+details.acc > summary::after{content:"";margin-inline-start:auto;width:9px;height:9px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:translateY(-2px) rotate(45deg);transition:transform .2s;flex:none}
+details.acc[open] > summary::after{transform:translateY(2px) rotate(-135deg)}
 details.acc > summary:hover{background:var(--accent-soft);border-radius:12px}
 details.acc[open] > summary{border-bottom:1px solid var(--line);border-radius:12px 12px 0 0}
 .acc-body{padding:4px 18px 16px}
+.acc-tools{display:flex;justify-content:flex-end;max-width:76ch;margin:18px 0 -14px}
+.item-head .readmark{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13px;font-weight:600;color:var(--done)}
+.finish{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:36px;max-width:72ch;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.finish .muted{font-size:14px}
 details.acc.lead{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
 details.acc.big > summary{font-size:19px;padding:16px 18px}
 @media (prefers-reduced-motion:reduce){details.acc > summary::after{transition:none}}
@@ -455,6 +463,7 @@ details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
 </style>
 
 <div id="app">
+<a class="skiplink" href="#main" id="skipMain">דלג לתוכן</a>
 <header class="top">
   <div class="wrap top-in">
     <a class="brand" href="#home" aria-label="קיט ההתמחות, דף הבית">
@@ -581,14 +590,14 @@ function storeNote(){
 }
 
 /* ================= shared renderers ================= */
-function readBtn(id, big){
+function readBtn(id, big, primary = true){
   const r = Store.isRead(id);
-  if (big) return `<button class="btn ${r ? 'is-read' : 'primary'}" data-toggle="${id}" aria-pressed="${r}">${r ? CHECK.replace('<svg', '<svg width="16" height="16"') + ' קראתי' : 'סימון כנקרא'}</button>`;
+  if (big) return `<button class="btn ${r ? 'is-read' : primary ? 'primary' : ''}" data-toggle="${id}" aria-pressed="${r}">${r ? CHECK.replace('<svg', '<svg width="16" height="16"') + ' קראתי' : 'סימון כנקרא'}</button>`;
   return `<button class="readbtn" data-toggle="${id}" aria-pressed="${r}" aria-label="${r ? 'בטל סימון כנקרא' : 'סמן כנקרא'}: ${esc(IT[id].title)}" title="${r ? 'נקרא' : 'סמן כנקרא'}">${CHECK}</button>`;
 }
 function domainChip(d){ return `<a class="chip" href="#d-${d}" style="--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d].label)}</a>`; }
 function stageChip(s){ return `<a class="chip" href="#${s}">${esc(ST[s].label)} · ${esc(ST[s].course)}</a>`; }
-function acc(title, html, id, cls){ return `<details class="acc${cls ? ' ' + cls : ''}"${id ? ` id="${id}"` : ''}><summary>${title}</summary><div class="acc-body prose">${html}</div></details>`; }
+function acc(title, html, id, cls, open){ return `<details class="acc${cls ? ' ' + cls : ''}"${id ? ` id="${id}"` : ''}${open ? ' open' : ''}><summary>${title}</summary><div class="acc-body prose">${html}</div></details>`; }
 function miniTldr(t){ return t ? `<details class="mini"><summary>תקציר</summary><p>${esc(t)}</p></details>` : ''; }
 function byline(it){ return [it.authors, it.year].filter(Boolean).map(esc).join(' · '); }
 const FDIR = 'files/';
@@ -860,7 +869,7 @@ function pageHome(){
       <div class="eyebrow">הבא בתור · ${esc(ST[cur].label)}</div>
       ${nxt ? `<h2><a href="#i-${nxt.id}">${esc(nxt.title)}</a></h2><div class="by">${byline(nxt)}</div>
         ${miniTldr(nxt.tldr)}
-        <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true)}</div>${skipBar(cur, nxt)}`
+        <div class="actions"><a class="btn primary" href="#i-${nxt.id}">לסיכום</a>${nxt.file ? pdfLink(nxt.id, 'פתיחת המקור') : nxt.url ? `<a class="btn" href="${esc(nxt.url)}" target="_blank" rel="noopener">למקור ↗</a>` : ''}${readBtn(nxt.id, true, false)}</div>${skipBar(cur, nxt)}`
       : `<h2>סיימת את ${esc(ST[cur].label)}</h2><p>כל הפריטים בשנה הזו סומנו כנקראו.</p><div class="actions">${cur !== 's3' ? `<a class="btn primary" href="#${D.stages[D.stages.findIndex(s => s.id === cur) + 1].id}">לשנה הבאה</a>` : `<a class="btn primary" href="#exam">להכנה לבחינה</a>`}</div>`}
       <div class="actions" style="margin-top:6px"><a href="#${cur}">לכל רשימת הקריאה של ${esc(ST[cur].label)} ←</a></div>
     </div>
@@ -1000,16 +1009,16 @@ function pageItem(id){
   const crumbs = it.placements.length
     ? domainsOf(it).map(domainChip).join('')
     : `<a class="chip" href="#outlines">מתווי עבודה</a>`;
-  const srcBtn = it.file ? pdfLink(it.id, 'פתיחת קובץ המקור') : it.url ? `<a class="btn" href="${esc(it.url)}" target="_blank" rel="noopener">למקור ↗</a>` : '';
   let body = '', toc = '';
   body += srcBox(it);
   if (it.inFolder){
-    body += `<div class="acc-group">` + acc('<b>בקצרה</b>', it.secs.abstract || '', 'sec-abstract', 'lead');
+    body += `<div class="acc-tools"><button type="button" class="linkbtn" data-accall>פתיחת כל הסעיפים</button></div>`;
+    body += `<div class="acc-group">` + acc('<b>בקצרה</b>', it.secs.abstract || '', 'sec-abstract', 'lead', true);
     let n = 0;
     SEC_ORDER.forEach(([k, label]) => {
       const h = it.secs[k]; if (!h || !h.trim()) return;
       n++;
-      body += acc(`<b>${esc(label)}</b>`, h, `sec-${k}`, `sec-${k}`);
+      body += acc(`<b>${esc(label)}</b>`, h, `sec-${k}`, `sec-${k}`, k === 'ideas');
       toc += `<button data-jump="sec-${k}">${esc(label)}</button>`;
     });
     D.tools.filter(t => t.sources.includes(id)).forEach(t => {
@@ -1035,12 +1044,12 @@ function pageItem(id){
   return `<div class="item-layout"><div>
     <div class="crumbs">${crumbs}</div>
     ${posNote}
-    <div class="item-head"><h1>${esc(it.title)}</h1><div class="by">${byline(it)}</div>${level}</div>
-    <div class="actions">${readBtn(id, true)}${srcBtn}</div>
+    <div class="item-head"><h1>${esc(it.title)}</h1><div class="by">${byline(it)}</div>${level}${Store.isRead(id) ? `<span class="readmark">${CHECK.replace('<svg', '<svg width="14" height="14" aria-hidden="true"')} קראתי</span>` : ''}</div>
     ${body}
     ${terms.length ? `<div class="related">
       ${terms.length ? `<h2>מושגים מהפריט</h2><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div>` : ''}
     </div>` : ''}
+    <div class="finish">${!Store.isRead(id) && next ? `<button type="button" class="btn primary" data-readnext="${id}" data-next="${next.id}">סימון כנקרא והמשך לפריט הבא ←</button>${readBtn(id, true, false)}` : readBtn(id, true, !Store.isRead(id))}${Store.isRead(id) && next ? `<a class="btn" href="#i-${next.id}">לפריט הבא ←</a>` : ''}</div>
     <div class="cite"><p><b>מראה מקום:</b> ${esc(it.cite)}</p><button class="btn" data-copy="${esc(it.cite)}" style="font-size:13px;padding:5px 10px">העתקה</button></div>
     <nav class="pager items" aria-label="פריטים סמוכים">${prev ? `<a class="prev" href="#i-${prev.id}"><span class="arw" aria-hidden="true">→</span><span><small>הקודם ב${esc(yl)}</small>${esc(prev.title)}</span></a>` : ''}${next ? `<a class="next" href="#i-${next.id}"><span><small>הבא ב${esc(yl)}</small>${esc(next.title)}</span><span class="arw" aria-hidden="true">←</span></a>` : ''}</nav>
   </div>
@@ -1210,6 +1219,7 @@ function render(keepScroll){
   try { [html, navKey] = route(r); } catch(err){ html = notFound(); navKey = ''; }
   if (html === 'REDIRECT'){ const t = navKey; location.replace('#i-' + t.sources[0]); setTimeout(() => { const d = document.getElementById('tool-' + t.id); if (d){ d.open = true; d.scrollIntoView({ block: 'start' }); } }, 60); return; }
   $main.innerHTML = html;
+  if (r !== 'search' && !r.startsWith('q-')) document.getElementById('q').value = '';
   document.querySelectorAll('#nav a').forEach(a => { if (a.dataset.r === navKey) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
   if (r === 'library') renderLib();
   if (r === 'glossary') renderGlossary();
@@ -1258,6 +1268,10 @@ document.addEventListener('click', e => {
   if (e.target.closest('#readerClose')){ closeReader(); return; }
   if (e.target.closest('#zoomIn')){ zoomBy(0.25); return; }
   if (e.target.closest('#zoomOut')){ zoomBy(-0.25); return; }
+  const rn = e.target.closest('[data-readnext]');
+  if (rn){ const nx = rn.dataset.next; if (!Store.isRead(rn.dataset.readnext)) Store.toggle(rn.dataset.readnext); location.hash = '#i-' + nx; return; }
+  const aa = e.target.closest('[data-accall]');
+  if (aa){ const ds = [...$main.querySelectorAll('details.acc')]; const open = !ds.every(d => d.open); ds.forEach(d => d.open = open); aa.textContent = open ? 'סגירת כל הסעיפים' : 'פתיחת כל הסעיפים'; return; }
   const t = e.target.closest('[data-toggle]');
   if (t){ e.preventDefault(); Store.toggle(t.dataset.toggle); return; }
   const j = e.target.closest('[data-jump]');
@@ -1269,7 +1283,7 @@ document.addEventListener('click', e => {
   const L = e.target.closest('[data-letter]');
   if (L){ const s = document.getElementById('gl-' + L.dataset.letter); if (s) s.scrollIntoView({ block: 'start' }); return; }
   const term = e.target.closest('[data-term]');
-  if (term){ GL.q = term.dataset.term; GL.domain = ''; if (current() === 'glossary') render(false); else location.hash = '#glossary';
+  if (term){ GL.q = ''; GL.domain = ''; if (current() === 'glossary') render(false); else location.hash = '#glossary';
     setTimeout(() => { const el = document.querySelector(`.gl[data-gterm="${CSS.escape(term.dataset.term)}"]`); if (el){ el.open = true; el.scrollIntoView({ block: 'start' }); } }, 30); return; }
   const cp = e.target.closest('[data-copy]');
   if (cp){ const txt = cp.dataset.copy; const done = () => { cp.textContent = 'הועתק'; setTimeout(() => cp.textContent = 'העתקה', 1500); };
@@ -1283,6 +1297,7 @@ document.addEventListener('input', e => {
   if (e.target.id === 'libq'){ LIB.q = e.target.value; clearTimeout(inT); inT = setTimeout(renderLib, 120); }
   if (e.target.id === 'glq'){ GL.q = e.target.value; clearTimeout(inT); inT = setTimeout(renderGlossary, 120); }
 });
+document.getElementById('skipMain').addEventListener('click', e => { e.preventDefault(); $main.focus(); });
 document.getElementById('searchForm').addEventListener('submit', e => {
   e.preventDefault();
   SEARCH_Q = document.getElementById('q').value.trim();
