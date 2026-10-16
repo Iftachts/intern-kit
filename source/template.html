@@ -908,7 +908,7 @@ async function openReader(key, trigger){
     $r('readerBody').focus({ preventScroll: true });
   } catch(e){
     if (tok !== RD.token) return;
-    st.textContent = 'לא הצלחנו להציג את הקובץ כאן.' + (document.documentElement.classList.contains('can-dl') ? ' אפשר להוריד אותו בכפתור "הורדה".' : ' כדאי לנסות שוב מאוחר יותר.');
+    st.textContent = 'התצוגה נתקעה.' + (document.documentElement.classList.contains('can-dl') ? ' אפשר להוריד את הקובץ בכפתור "הורדה".' : ' כדאי לנסות שוב מאוחר יותר.');
   }
 }
 function setInert(on){ ['.top', '#main'].forEach(sel => { const el = document.querySelector(sel); if (el){ if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); } }); }
@@ -1027,7 +1027,7 @@ function pageHome(){
   </section>
   <p class="home-q">אז מאיפה מתחילים?</p>
   <nav class="year-track" aria-label="שנות ההתמחות">${track}</nav>
-  <div class="outl-strip"><b>מתווי עבודה</b><span class="m">לא שייכים לשנה מסוימת: מה נכלל בעבודה בכל מסגרת. כדאי להכיר את המתווה של המסגרת שלך כבר בהתחלה.</span>
+  <div class="outl-strip"><b>מתווי עבודה</b><span class="m">מלווים את כל השנים: מה נכלל בעבודה בכל מסגרת. כדאי להכיר את המתווה של המסגרת שלך כבר בהתחלה.</span>
     <div class="row">${D.outlines.map(o => `<a class="chip" href="#i-${o.item}">${esc(o.label)}</a>`).join('')}<a class="chip" href="#outlines">לכל המתווים</a></div></div>
 
   <section class="home-grid">
@@ -1252,7 +1252,7 @@ function renderLib(){
     if (q && !(i._n || (i._n = norm(i.title + ' ' + i.authors + ' ' + i.year + ' ' + i.search))).includes(q)) return false;
     return true;
   });
-  el.innerHTML = `<p class="muted" style="margin:18px 0 10px">${list.length} פריטים</p>` + (list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : '<div class="empty-state">אין פריטים שמתאימים לסינון. אפשר לנקות חלק מהמסננים.</div>');
+  el.innerHTML = `<p class="muted" style="margin:18px 0 10px">${list.length} פריטים</p>` + (list.length ? `<div class="cards">${list.map(itemCard).join('')}</div>` : '<div class="empty-state">הסינון הזה ריק. אפשר לנקות חלק מהמסננים.</div>');
 }
 
 /* tools */
@@ -1279,7 +1279,7 @@ function renderGlossary(){
     `<div class="gl-letter" id="gl-${L}">${L}</div>` + by[L].map(g => `<details class="gl" data-gterm="${esc(g.term)}"><summary><span class="t">${esc(g.term)}</span>${g.en ? `<span class="en">${esc(g.en)}</span>` : ''}</summary>
       <div class="prose">${g.html}</div>
       <div class="meta">${g.domains.map(d => `<span style="display:inline-flex;gap:5px;align-items:center;--c:${dcol(d)}"><span class="dot"></span>${esc(DM[d] ? DM[d].label : d)}</span>`).join('')}${g.sources.length ? ' · מקורות: ' + g.sources.map(s => `<a class="ref" href="#i-${s}">${esc(IT[s].ref)}</a>`).join(', ') : ''}</div></details>`).join('')).join('')
-    : '<div class="empty-state">לא נמצא מושג. אפשר לנסות ניסוח אחר או לחפש בחיפוש הכללי.</div>';
+    : '<div class="empty-state">החיפוש במילון חזר ריק. אפשר לנסות ניסוח אחר או את החיפוש הכללי.</div>';
 }
 
 /* outlines */
@@ -1319,7 +1319,7 @@ function pageSearch(){
   const terms = D.glossary.filter(g => norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q));
   const none = !items.length && !terms.length;
   return `<div class="pagehead"><h1>תוצאות עבור "${esc(SEARCH_Q)}"</h1><p class="lede">${items.length} פריטים · ${terms.length} מושגים</p></div>
-    ${none ? '<div class="empty-state">לא נמצאו תוצאות. אפשר לנסות מילה אחרת או חלק ממילה.</div>' : ''}
+    ${none ? '<div class="empty-state">החיפוש חזר ריק. אפשר לנסות מילה אחרת או חלק ממילה.</div>' : ''}
     ${terms.length ? `<div class="section-head"><h2>מושגים</h2></div><div class="related"><div class="row">${terms.slice(0, 30).map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
     ${items.length ? `<div class="section-head"><h2>פריטים</h2></div><div class="cards">${items.map(itemCard).join('')}</div>` : ''}`;
 }
@@ -1343,7 +1343,7 @@ function pageSources(){
   return h;
 }
 
-function notFound(){ return `<div class="empty-state"><h1 style="font-size:28px">הדף לא נמצא</h1><p><a href="#home">חזרה לדף הבית</a></p></div>`; }
+function notFound(){ return `<div class="empty-state"><h1 style="font-size:28px">הדף הזה חסר</h1><p><a href="#home">חזרה לדף הבית</a></p></div>`; }
 
 /* ================= router ================= */
 let CUR = '';
