@@ -443,13 +443,12 @@ details.gl > .prose,details.gl > .meta{padding:0 2px 14px}
       <a href="#outlines" data-r="outlines" class="nav-outl">מתווי עבודה</a>
       <span class="nav-sep" aria-hidden="true"></span>
       <a href="#library" data-r="library">ספרייה</a>
-      <a href="#tools" data-r="tools">כלים</a>
       <a href="#glossary" data-r="glossary">מילון</a>
       <a href="#sources" data-r="sources">מקורות</a>
     </nav>
     <form class="search" id="searchForm" role="search">
       <label class="sr" for="q">חיפוש</label>
-      <input id="q" type="search" placeholder="חיפוש: מאמר, כלי או מושג" autocomplete="off">
+      <input id="q" type="search" placeholder="חיפוש: מאמר או מושג" autocomplete="off">
     </form>
   </div>
 </header>
@@ -780,11 +779,10 @@ function pageHome(){
     </aside>
   </section>
 
-  <section id="orient" style="margin-top:28px">${acc('<b>מתחילים כאן</b> <span class="muted">מה לקרוא בחודש הראשון</span>', `<div class="orient">${D.domainText.orientation || ''}</div>`, 'orientAcc', 'big')}</section>
+
 
   <div class="section-head"><h2>לצד המסלול</h2></div>
   <div class="quick">
-    <a href="#tools"><b>ארגז כלים</b><span>${D.tools.length} צ'קליסטים ורצפי עבודה, מסודרים לפי השנים</span></a>
     <a href="#glossary"><b>מילון מושגים</b><span>${D.glossary.length} מושגים, עם הפניה למקורות</span></a>
     <a href="#domains"><b>תחומי העבודה</b><span>סקירה לכל אחד משבעת התחומים</span></a>
     <a href="#map"><b>מבט על</b><span>כל השנים מול תחומי העבודה בטבלה אחת</span></a>
@@ -820,7 +818,7 @@ function matrix(){
       h += `<div class="mx-cell" data-stage="${esc(s.label + ' · ' + s.course)}">${inner}</div>`;
     });
   });
-  h += `<div class="mx-rowhead mx-res"><a href="#tools"><span class="dot" style="background:var(--muted)"></span>משאבים</a><small>כלים מומלצים</small></div>`;
+  h += `<div class="mx-rowhead mx-res"><a href="#map"><span class="dot" style="background:var(--muted)"></span>משאבים</a><small>כלים מומלצים</small></div>`;
   D.stages.forEach(s => {
     const rs = D.resources.filter(r => r.stage === s.id);
     h += `<div class="mx-cell mx-res" data-stage="${esc(s.label + ' · משאבים')}"><ul>${rs.map(r => `<li>${r.item ? `<a href="#i-${r.item}">${esc(r.title)}</a>` : esc(r.title)} <span class="muted">· ${esc(r.note)}</span></li>`).join('') || '<li class="mx-empty">—</li>'}</ul></div>`;
@@ -866,7 +864,6 @@ function pageStage(sid){
   <div class="section-head"><h2>רשימת הקריאה</h2><span class="muted">${ids.length} פריטים, לפי תחומי העבודה</span></div>
   ${groups}
   ${res.length ? `<div class="section-head"><h2>משאבים לשנה הזו</h2></div><ul class="prose">${res.map(r => `<li>${r.item ? `<a href="#i-${r.item}">${esc(r.title)}</a>` : esc(r.title)} <span class="muted">· ${esc(r.note)}</span></li>`).join('')}</ul>` : ''}
-  ${tools.length ? `<div class="section-head"><h2>כלים לשנה הזו</h2><span class="muted">כלים שנשענים על הקריאה של השנה</span></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
   ${terms.length ? `<div class="section-head"><h2>מושגים של השנה</h2><a href="#glossary">למילון המלא</a></div><div class="related" style="margin-top:0;max-width:none"><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
   ${exam}
   <nav class="pager" style="max-width:none" aria-label="שנים סמוכות">${prevS ? `<a href="#${prevS.id}"><small>השנה הקודמת</small>${esc(prevS.label)} · ${esc(prevS.course)}</a>` : '<span></span>'}${nextS ? `<a href="#${nextS.id}" style="text-align:end"><small>השנה הבאה</small>${esc(nextS.label)} · ${esc(nextS.course)}</a>` : ''}</nav>`;
@@ -875,7 +872,7 @@ function pageStage(sid){
 function pageDomains(){
   return `<div class="pagehead"><h1>תחומים</h1><p class="lede">שבעת תחומי העבודה. בכל תחום: סקירה שמחברת בין המקורות, הקריאה לפי שלבים, כלים ומושגים.</p></div>
   <div class="tool-grid" style="margin-top:24px">${D.domains.map(d => { const ids = itemsIn(null, d.id).map(i => i.id);
-    return `<a class="tool-card" href="#d-${d.id}" style="--c:${dcol(d.id)}"><b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b><span>${ids.length} פריטים · ${D.tools.filter(t => t.domain === d.id).length} כלים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; }).join('')}</div>`;
+    return `<a class="tool-card" href="#d-${d.id}" style="--c:${dcol(d.id)}"><b style="display:flex;gap:8px;align-items:center"><span class="dot" style="width:12px;height:12px"></span>${esc(d.long)}</b><span>${ids.length} פריטים · ${D.glossary.filter(g => g.domains.includes(d.id)).length} מושגים</span>${bar(Store.count(ids), ids.length)}</a>`; }).join('')}</div>`;
 }
 
 function domainAcc(h){
@@ -901,7 +898,6 @@ function pageDomain(did){
     <div style="margin-top:14px;max-width:420px"><div class="prog-row"><span>נקראו</span><span>${Store.count(ids)}/${ids.length}</span>${bar(Store.count(ids), ids.length)}</div></div></div>
     <div class="domain-body">${domainAcc(D.domainText[did] || '')}</div>
     <div class="section-head"><h2>הקריאה לפי שלבים</h2></div>${byStage}
-    ${tools.length ? `<div class="section-head"><h2>כלים בתחום</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
     ${terms.length ? `<div class="section-head"><h2>מושגים בתחום</h2><a href="#glossary">למילון המלא</a></div><div class="related"><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}`;
 }
 
@@ -927,6 +923,10 @@ function pageItem(id){
       body += acc(`<b>${esc(label)}</b>`, h, `sec-${k}`, `sec-${k}`);
       toc += `<button data-jump="sec-${k}">${esc(label)}</button>`;
     });
+    D.tools.filter(t => t.sources.includes(id)).forEach(t => {
+      body += acc(`<b>לעבודה בשטח: ${esc(t.title)}</b>`, `<p class="muted"><b>מתי להשתמש:</b> ${esc(t.when)}</p>` + t.html, `tool-${t.id}`, 'toolacc');
+      toc += `<button data-jump="tool-${t.id}">לעבודה בשטח</button>`;
+    });
     body += `</div>`;
   } else {
     body += `<div class="linkonly-box"><p>${esc(it.desc || '')}</p></div>`;
@@ -946,8 +946,7 @@ function pageItem(id){
     <div class="item-head"><h1>${esc(it.title)}</h1><div class="by">${byline(it)}</div>${level}</div>
     <div class="actions">${readBtn(id, true)}${srcBtn.replace('class="btn"', 'class="btn"')}</div>
     ${body}
-    ${(tools.length || terms.length) ? `<div class="related">
-      ${tools.length ? `<h2>כלים שנשענים על הפריט</h2><div class="row" style="margin-bottom:18px">${tools.map(t => `<a class="chip" href="#t-${t.id}">${esc(t.title)}</a>`).join('')}</div>` : ''}
+    ${terms.length ? `<div class="related">
       ${terms.length ? `<h2>מושגים מהפריט</h2><div class="row">${terms.map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div>` : ''}
     </div>` : ''}
     <div class="cite"><p><b>מראה מקום:</b> ${esc(it.cite)}</p><button class="btn" data-copy="${esc(it.cite)}" style="font-size:13px;padding:5px 10px">העתקה</button></div>
@@ -1059,13 +1058,13 @@ function pageExam(){
 let SEARCH_Q = '';
 function pageSearch(){
   const q = norm(SEARCH_Q);
-  if (!q) return `<div class="pagehead"><h1>חיפוש</h1><p class="lede">אפשר לחפש מאמר, מחבר, כלי או מושג בתיבת החיפוש למעלה.</p></div>`;
+  if (!q) return `<div class="pagehead"><h1>חיפוש</h1><p class="lede">אפשר לחפש מאמר, מחבר או מושג בתיבת החיפוש למעלה.</p></div>`;
   const items = D.items.map(i => { const t = norm(i.title + ' ' + i.authors); const s = norm(i.search);
     return [i, t.includes(q) ? 3 : s.includes(q) ? 1 : 0]; }).filter(x => x[1]).sort((a, b) => b[1] - a[1]).map(x => x[0]);
-  const tools = D.tools.filter(t => norm(t.title + ' ' + t.when + ' ' + t.html.replace(/<[^>]+>/g, ' ')).includes(q));
+  const tools = [];
   const terms = D.glossary.filter(g => norm(g.term + ' ' + g.en).includes(q) || norm(g.html.replace(/<[^>]+>/g, ' ')).includes(q));
   const none = !items.length && !tools.length && !terms.length;
-  return `<div class="pagehead"><h1>תוצאות עבור "${esc(SEARCH_Q)}"</h1><p class="lede">${items.length} פריטים · ${tools.length} כלים · ${terms.length} מושגים</p></div>
+  return `<div class="pagehead"><h1>תוצאות עבור "${esc(SEARCH_Q)}"</h1><p class="lede">${items.length} פריטים · ${terms.length} מושגים</p></div>
     ${none ? '<div class="empty-state">לא נמצאו תוצאות. אפשר לנסות מילה אחרת או חלק ממילה.</div>' : ''}
     ${terms.length ? `<div class="section-head"><h2>מושגים</h2></div><div class="related"><div class="row">${terms.slice(0, 30).map(g => `<button class="chip" style="border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:600" data-term="${esc(g.term)}">${esc(g.term)}</button>`).join('')}</div></div>` : ''}
     ${tools.length ? `<div class="section-head"><h2>כלים</h2></div><div class="tool-grid">${tools.map(toolCard).join('')}</div>` : ''}
@@ -1107,8 +1106,8 @@ function render(keepScroll){
   else if (r.startsWith('d-') && DM[r.slice(2)]){ html = pageDomain(r.slice(2)); }
   else if (r.startsWith('i-')){ html = pageItem(r.slice(2)); const itx = IT[r.slice(2)]; navKey = itx && stageOfItem(itx) ? stageOfItem(itx) : 'outlines'; }
   else if (r === 'library'){ html = pageLibrary(); navKey = 'library'; }
-  else if (r === 'tools'){ html = pageTools(); navKey = 'tools'; }
-  else if (r.startsWith('t-')){ html = pageTool(r.slice(2)); navKey = 'tools'; }
+  else if (r === 'tools'){ html = pageLibrary(); navKey = 'library'; }
+  else if (r.startsWith('t-')){ const tt = TL[r.slice(2)]; if (tt){ location.replace('#i-' + tt.sources[0]); return; } html = notFound(); }
   else if (r === 'glossary'){ html = pageGlossary(); navKey = 'glossary'; }
   else if (r === 'outlines'){ html = pageOutlines(); navKey = 'outlines'; }
   else if (r === 'exam'){ html = pageExam(); navKey = 's3'; }
