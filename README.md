@@ -12,7 +12,8 @@
 | `source/content/` | סקירות התחומים, ארגז הכלים והמילון (Markdown) |
 | `source/meta.py` | מפת הפריטים: שנה, תחום, מראה מקום, קישור |
 | `source/template.html` | העיצוב והקוד של האתר |
-| `source/build.py`, `source/assemble.sh` | בניית `index.html` מהתוכן |
+| `source/files_manifest.json`, `source/url_labels.json` | רשימת קבצי ה-PDF ותוויות הקישורים, שהבנייה קוראת |
+| `source/build.py` | בניית `index.html` מהתוכן |
 
 ## הרצה
 
@@ -31,7 +32,7 @@ python3 -m http.server
 עורכים את קובצי ה-Markdown או את `source/meta.py`, ומריצים:
 
 ```
-pip install markdown
+pip install "markdown==3.7"
 python3 source/build.py
 ```
 

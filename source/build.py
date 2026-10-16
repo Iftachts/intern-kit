@@ -5,7 +5,9 @@ import markdown
 
 from pathlib import Path as _P
 BASE = str(_P(__file__).resolve().parent)
-SUMM = str(_P(BASE) / "summaries") if (_P(BASE) / "summaries").is_dir() else "/home/claude/summaries"
+SUMM = str(_P(BASE) / "summaries")
+if not os.path.isdir(SUMM):
+    raise SystemExit(f"summaries directory not found: {SUMM}")
 exec(open(f"{BASE}/meta.py", encoding="utf-8").read())
 
 REF = {
